@@ -259,7 +259,7 @@ export default function SignupPage() {
     <>
       {showSplash && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-[#024083] via-[#1067b5] to-[#4096da] transition-opacity duration-500 ${
+          className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-linear-to-tr from-[#024083] via-[#1067b5] to-[#4096da] transition-opacity duration-500 ${
             fadeSplash ? "opacity-0" : "opacity-100"
           }`}
         >
