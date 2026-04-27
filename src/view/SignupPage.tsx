@@ -341,7 +341,7 @@ function OTPForm({ formData, setFormData, errors }: FormProps) {
   )
 }
 
-function AvatarUploadForm({ formData, setFormData, errors }: FormProps) {
+function AvatarUploadForm({ formData, setFormData }: FormProps) {
   return (
     <div className="flex flex-col items-center justify-center py-4">
       <label
