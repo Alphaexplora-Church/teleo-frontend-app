@@ -1,8 +1,9 @@
 import { useState, useEffect, type ReactNode } from "react"
-import { Plus } from "lucide-react"
+import { Mars, Plus, Venus, VenusAndMars } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Link } from "react-router"
 
 function NameForm() {
   return (
@@ -37,25 +38,45 @@ function BirthdayForm() {
 }
 
 function GenderForm() {
+  const [selected, setSelected] = useState<string | null>(null)
+
+  const baseStyle =
+    "flex h-16 w-16 items-center justify-center rounded-full border-2 transition-colors"
+
+  const getStyle = (value: string) =>
+    `${baseStyle} ${
+      selected === value
+        ? "border-primary bg-primary"
+        : "border-gray-300 hover:border-primary bg-gray-500"
+    }`
+
+  const getIconStyle = (value: string) =>
+    selected === value ? "text-primary-foreground" : "text-white"
+
   return (
     <div className="flex justify-center gap-4">
       <button
-        className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-300 transition-colors hover:border-blue-500"
+        className={getStyle("male")}
+        onClick={() => setSelected("male")}
         title="Male"
       >
-        ♂
+        <Mars className={`h-8 w-8 ${getIconStyle("male")}`} />
       </button>
+
       <button
-        className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-300 transition-colors hover:border-blue-500"
+        className={getStyle("both")}
+        onClick={() => setSelected("both")}
         title="Male and Female"
       >
-        ♂♀
+        <VenusAndMars className={`h-8 w-8 ${getIconStyle("both")}`} />
       </button>
+
       <button
-        className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-300 transition-colors hover:border-blue-500"
+        className={getStyle("female")}
+        onClick={() => setSelected("female")}
         title="Female"
       >
-        ♀
+        <Venus className={`h-8 w-8 ${getIconStyle("female")}`} />
       </button>
     </div>
   )
@@ -98,7 +119,12 @@ function ContactForm() {
           <Input id="email" type="email" placeholder="Email" required />
         </Field>
         <Field>
-          <Input id="phone" type="tel" placeholder="Phone Number" required />
+          <Input
+            id="phone"
+            type="tel"
+            placeholder="+63 123 456 7890"
+            required
+          />
         </Field>
       </FieldGroup>
     </form>
@@ -125,6 +151,15 @@ function PasswordForm() {
             required
           />
         </Field>
+        <div className="flex items-center">
+          <input type="checkbox" id="terms" required />
+          <label htmlFor="terms" className="ml-2 text-xs text-gray-600">
+            I have read and accept the{" "}
+            <Link to="/terms" className="text-blue-500 underline">
+              terms and conditions and the privacy policy.
+            </Link>
+          </label>
+        </div>
       </FieldGroup>
     </form>
   )
@@ -186,7 +221,7 @@ type SignupStep = {
 const signup: SignupStep[] = [
   {
     title: "Hello!",
-    description: "A simple signup page that asks for the user's name.",
+    description: "What's your name?",
     content: <NameForm />,
   },
   {
@@ -239,8 +274,8 @@ export default function SignupPage() {
   const [fadeSplash, setFadeSplash] = useState(false)
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setFadeSplash(true), 1500)
-    const timer2 = setTimeout(() => setShowSplash(false), 2000)
+    const timer1 = setTimeout(() => setFadeSplash(true), 1000)
+    const timer2 = setTimeout(() => setShowSplash(false), 1500)
     return () => {
       clearTimeout(timer1)
       clearTimeout(timer2)
@@ -322,12 +357,15 @@ export default function SignupPage() {
         className="space-y-8 text-center"
         style={{ display: showSplash ? "none" : "block" }}
       >
-        <h1 className="text-3xl">{signup[currentStep].title}</h1>
+        <h1 className="text-3xl font-bold">{signup[currentStep].title}</h1>
         <h2>{signup[currentStep].description}</h2>
 
         <div className="py-8">{signup[currentStep].content}</div>
 
-        <Button className="w-full" onClick={handleNext}>
+        <Button
+          className="w-full shadow-2xl shadow-gray-500"
+          onClick={handleNext}
+        >
           {signup[currentStep].buttonText ||
             (currentStep < signup.length - 1 ? "Next" : "Submit")}
         </Button>

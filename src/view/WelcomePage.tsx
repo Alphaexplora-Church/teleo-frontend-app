@@ -3,16 +3,26 @@ import { Link } from "react-router"
 
 export default function WelcomePage() {
   return (
-    <div className="text-center">
-      <h1 className="max-w-2xl">Welcome to Teleo!</h1>
+    <div className="space-y-8 text-center">
+      <h1 className="text-2xl font-semibold">Welcome to Teleo!</h1>
       <div className="flex flex-col gap-4">
-        <Button asChild>
+        <Button className="rounded-full" size="lg" asChild>
           <Link to="/signup">Create a new Account</Link>
         </Button>
-        <Button variant="secondary" asChild>
+        <Button
+          variant="secondary"
+          className="rounded-full border-2 border-primary"
+          size="lg"
+          asChild
+        >
           <Link to="/login">Log In</Link>
         </Button>
-        <Button asChild>
+        <div className="flex items-center">
+          <hr className="grow border-t" />
+          <span className="mx-2 text-xs text-gray-500">OR</span>
+          <hr className="grow border-t" />
+        </div>
+        <Button className="rounded-full" size="lg" asChild>
           <Link to="/guest">Continue as Guest</Link>
         </Button>
       </div>
