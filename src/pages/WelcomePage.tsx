@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router"
+import logo from "@/assets/logo.png"
 
 export default function WelcomePage() {
   return (
     <div className="space-y-8 text-center">
+      <img src={logo} alt="Teleo Logo" className="mx-auto size-32" />
       <h1 className="text-2xl font-semibold">Welcome to Teleo!</h1>
       <div className="flex flex-col gap-4">
         <Button className="rounded-full" size="lg" asChild>
