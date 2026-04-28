@@ -3,9 +3,17 @@ import { Mars, Plus, Venus, VenusAndMars } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
+import { useNavigate } from "react-router"
 import z from "zod"
-
+import React from "react"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import Picker from "react-mobile-picker"
 // Added 'terms' and a password match refinement to your schema
 const formSchema = z
   .object({
@@ -95,31 +103,77 @@ function NameForm({ formData, setFormData, errors }: FormProps) {
   )
 }
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
+const days = Array.from({ length: 31 }, (_, i) => i + 1)
+const years = Array.from({ length: 100 }, (_, i) => 2024 - i)
+
 function BirthdayForm({ formData, setFormData, errors }: FormProps) {
+  const [value, setValue] = useState({
+    month: "September",
+    day: 17,
+    year: 2021,
+  })
+
+  const handleChange = (nextValue: any) => {
+    setValue(nextValue)
+
+    const formatted = `${nextValue.year}-${String(months.indexOf(nextValue.month) + 1).padStart(2, "0")}-${String(nextValue.day).padStart(2, "0")}`
+
+    setFormData({ ...formData, birthday: formatted })
+  }
+
   return (
-    <form>
-      <FieldGroup>
-        <Field>
-          <Input
-            id="birthday"
-            type="date"
-            value={formData.birthday}
-            onChange={(e) =>
-              setFormData({ ...formData, birthday: e.target.value })
-            }
-          />
-          {errors.birthday && (
-            <p className="text-sm text-red-500">{errors.birthday}</p>
-          )}
-        </Field>
-      </FieldGroup>
-    </form>
+    <div>
+      <Picker value={value} onChange={handleChange}>
+        <Picker.Column name="month">
+          {months.map((m) => (
+            <Picker.Item key={m} value={m}>
+              {m}
+            </Picker.Item>
+          ))}
+        </Picker.Column>
+
+        <Picker.Column name="day">
+          {days.map((d) => (
+            <Picker.Item key={d} value={d}>
+              {d}
+            </Picker.Item>
+          ))}
+        </Picker.Column>
+
+        <Picker.Column name="year">
+          {years.map((y) => (
+            <Picker.Item key={y} value={y}>
+              {y}
+            </Picker.Item>
+          ))}
+        </Picker.Column>
+      </Picker>
+
+      {errors.birthday && (
+        <p className="text-sm text-red-500">{errors.birthday}</p>
+      )}
+    </div>
   )
 }
 
 function GenderForm({ formData, setFormData, errors }: FormProps) {
   const baseStyle =
-    "flex h-16 w-16 items-center justify-center rounded-full border-2 transition-colors"
+    "flex size-24 items-center justify-center rounded-full border-2 transition-colors"
 
   const getStyle = (value: string) =>
     `${baseStyle} ${
@@ -140,7 +194,7 @@ function GenderForm({ formData, setFormData, errors }: FormProps) {
           onClick={() => setFormData({ ...formData, gender: "male" })}
           title="Male"
         >
-          <Mars className={`h-8 w-8 ${getIconStyle("male")}`} />
+          <Mars className={`size-16 ${getIconStyle("male")}`} />
         </button>
         <button
           type="button"
@@ -148,7 +202,7 @@ function GenderForm({ formData, setFormData, errors }: FormProps) {
           onClick={() => setFormData({ ...formData, gender: "both" })}
           title="Male and Female"
         >
-          <VenusAndMars className={`h-8 w-8 ${getIconStyle("both")}`} />
+          <VenusAndMars className={`size-16 ${getIconStyle("both")}`} />
         </button>
         <button
           type="button"
@@ -156,7 +210,7 @@ function GenderForm({ formData, setFormData, errors }: FormProps) {
           onClick={() => setFormData({ ...formData, gender: "female" })}
           title="Female"
         >
-          <Venus className={`h-8 w-8 ${getIconStyle("female")}`} />
+          <Venus className={`size-16 ${getIconStyle("female")}`} />
         </button>
       </div>
       {errors.gender && <p className="text-sm text-red-500">{errors.gender}</p>}
@@ -281,7 +335,7 @@ function PasswordForm({ formData, setFormData, errors }: FormProps) {
           )}
         </Field>
         <div>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center text-left">
             <input
               type="checkbox"
               id="terms"
@@ -290,11 +344,42 @@ function PasswordForm({ formData, setFormData, errors }: FormProps) {
                 setFormData({ ...formData, terms: e.target.checked })
               }
             />
-            <label htmlFor="terms" className="ml-2 text-xs text-gray-600">
+            <label
+              htmlFor="terms"
+              className="tracking-tigher ml-2 text-sm text-[9px] text-gray-600"
+            >
               I have read and accept the{" "}
-              <Link to="/terms" className="text-blue-500 underline">
-                terms and conditions and the privacy policy.
-              </Link>
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <button className="text-blue-500 underline">
+                    terms and conditions and the privacy policy.
+                  </button>
+                </DrawerTrigger>
+
+                <DrawerContent className="max-h-[80vh] overflow-y-auto p-4">
+                  <DrawerHeader>
+                    <DrawerTitle className="text-2xl font-bold">
+                      Terms and Conditions
+                    </DrawerTitle>
+                  </DrawerHeader>
+
+                  <div className="space-y-4 text-sm text-gray-700">
+                    <h2 className="text-lg font-semibold">
+                      A. Teleo Terms and Conditions
+                    </h2>
+                    <p>
+                      {/* Your Terms content here */}
+                      Lorem ipsum dolor sit amet...
+                    </p>
+
+                    <h2 className="text-lg font-semibold">B. Privacy Policy</h2>
+                    <p>
+                      {/* Your Privacy content here */}
+                      Lorem ipsum dolor sit amet...
+                    </p>
+                  </div>
+                </DrawerContent>
+              </Drawer>
             </label>
           </div>
           {errors.terms && (
@@ -307,11 +392,61 @@ function PasswordForm({ formData, setFormData, errors }: FormProps) {
 }
 
 function OTPForm({ formData, setFormData, errors }: FormProps) {
+  const inputsRef = React.useRef<(HTMLInputElement | null)[]>([])
+  const [timeLeft, setTimeLeft] = useState(120)
+
+  // countdown timer
+  useEffect(() => {
+    if (timeLeft <= 0) return
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1)
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [timeLeft])
+
   const handleOtpChange = (index: number, value: string) => {
+    if (!/^[0-9]?$/.test(value)) return // only digits
+
     const newOtp = formData.otp.split("")
     newOtp[index] = value
-    setFormData({ ...formData, otp: newOtp.join("").padEnd(6, "").slice(0, 6) })
+
+    const updatedOtp = newOtp.join("").padEnd(6, "").slice(0, 6)
+    setFormData({ ...formData, otp: updatedOtp })
+
+    // move forward
+    if (value && index < 5) {
+      inputsRef.current[index + 1]?.focus()
+    }
   }
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+    // go back if empty
+    if (e.key === "Backspace" && !formData.otp[index] && index > 0) {
+      inputsRef.current[index - 1]?.focus()
+    }
+  }
+
+  const handleResend = () => {
+    if (timeLeft > 0) return
+
+    // TODO: call resend API here
+    console.log("Resend OTP")
+
+    setTimeLeft(120)
+  }
+
+  const formatTime = (time: number) => {
+    const m = Math.floor(time / 60)
+    const s = time % 60
+    return `${m}:${s.toString().padStart(2, "0")}`
+  }
+
+  // optional: autofocus first input
+  useEffect(() => {
+    inputsRef.current[0]?.focus()
+  }, [])
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -319,49 +454,86 @@ function OTPForm({ formData, setFormData, errors }: FormProps) {
         {[...Array(6)].map((_, i) => (
           <Input
             key={i}
+            ref={(el) => {
+              inputsRef.current[i] = el
+            }}
+            inputMode="numeric"
             className="h-12 w-12 text-center text-lg sm:h-14 sm:w-14"
             maxLength={1}
             value={formData.otp[i] || ""}
             onChange={(e) => handleOtpChange(i, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
           />
         ))}
       </div>
+
       {errors.otp && <p className="text-sm text-red-500">{errors.otp}</p>}
+
       <p className="text-sm text-gray-500">
         Haven't got the code yet?{" "}
-        <a
-          href="#"
-          className="font-medium text-blue-500 underline hover:text-blue-700"
-          onClick={(e) => e.preventDefault()}
+        <button
+          type="button"
+          onClick={handleResend}
+          disabled={timeLeft > 0}
+          className={`font-medium underline ${
+            timeLeft > 0
+              ? "cursor-not-allowed text-gray-400"
+              : "text-blue-500 hover:text-blue-700"
+          }`}
         >
-          Resend code
-        </a>
+          {timeLeft > 0 ? `Resend in ${formatTime(timeLeft)}` : "Resend code"}
+        </button>
       </p>
     </div>
   )
 }
 
 function AvatarUploadForm({ formData, setFormData }: FormProps) {
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const handleFileChange = (file?: File) => {
+    if (!file) return
+
+    setFormData({ ...formData, avatar_upload: file })
+
+    const url = URL.createObjectURL(file)
+    setPreview(url)
+  }
+
+  // cleanup object URL
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview)
+    }
+  }, [preview])
+
   return (
     <div className="flex flex-col items-center justify-center py-4">
       <label
         htmlFor="avatar_upload"
-        className="relative flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-blue-500 hover:bg-gray-100"
+        className="relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-blue-500 hover:bg-gray-100"
       >
-        <span className="sr-only">Upload avatar</span>
-        <Plus className="h-8 w-8 text-gray-400" />
+        {preview ? (
+          <img
+            src={preview}
+            alt="Avatar Preview"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <Plus className="h-8 w-8 text-gray-400" />
+        )}
+
         <input
           id="avatar_upload"
           type="file"
           accept="image/*"
           className="hidden"
-          onChange={(e) =>
-            setFormData({ ...formData, avatar_upload: e.target.files?.[0] })
-          }
+          onChange={(e) => handleFileChange(e.target.files?.[0])}
         />
       </label>
+
       {formData.avatar_upload && (
-        <p className="mt-2 text-sm text-green-600">File selected</p>
+        <p className="mt-2 text-sm text-green-600">Image selected</p>
       )}
     </div>
   )
@@ -423,7 +595,9 @@ const signupSteps: SignupStep[] = [
 export default function SignupPage() {
   const [currentStep, setCurrentStep] = useState(0)
   const [showSplash, setShowSplash] = useState(true)
-  const [fadeSplash, setFadeSplash] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  const navigate = useNavigate()
 
   // Central Form State
   const [formData, setFormData] = useState({
@@ -443,15 +617,6 @@ export default function SignupPage() {
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
-
-  useEffect(() => {
-    const timer1 = setTimeout(() => setFadeSplash(true), 1000)
-    const timer2 = setTimeout(() => setShowSplash(false), 1500)
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-    }
-  }, [])
 
   const handleNext = () => {
     // 1. Identify which fields are required for the current step
@@ -485,81 +650,127 @@ export default function SignupPage() {
       setCurrentStep(currentStep + 1)
     } else {
       console.log("Signup complete! Final Payload:", formData)
-      // Execute final API call here
+
+      setShowSuccess(true)
     }
   }
 
   const CurrentFormContent = signupSteps[currentStep].Content
 
-  return (
-    <>
-      {showSplash && (
-        <div
-          className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-linear-to-tr from-[#024083] via-[#1067b5] to-[#4096da] transition-opacity duration-500 ${
-            fadeSplash ? "opacity-0" : "opacity-100"
+  function AnimatedSplash({
+    show,
+    text,
+    onDone,
+  }: {
+    show: boolean
+    text: string
+    onDone?: () => void
+  }) {
+    const [fade, setFade] = useState(false)
+
+    useEffect(() => {
+      if (!show) return
+
+      setFade(false) // reset every time it shows
+
+      const t1 = setTimeout(() => setFade(true), 1000)
+      const t2 = setTimeout(() => onDone?.(), 3000)
+
+      return () => {
+        clearTimeout(t1)
+        clearTimeout(t2)
+      }
+    }, [show])
+
+    if (!show) return null
+
+    return (
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-linear-to-tr from-[#024083] via-[#1067b5] to-[#4096da] transition-opacity duration-500 ${
+          fade ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        {/* Top Shapes */}
+        <div className="absolute top-0 left-0 h-[50vh] w-full">
+          <svg
+            className="absolute top-0 left-0 h-full w-full object-cover"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,0 L100,0 L100,20 C70,60 60,10 40,30 C20,50 10,60 0,55 Z"
+              fill="#2e7bbf"
+              opacity="0.8"
+              style={{ filter: "drop-shadow(0px 10px 10px rgba(0,0,0,0.2))" }}
+            />
+            <path
+              d="M0,0 L100,0 L100,40 C70,90 50,40 20,45 C10,48 5,55 0,70 Z"
+              fill="#054b8c"
+              style={{ filter: "drop-shadow(0px 10px 10px rgba(0,0,0,0.3))" }}
+            />
+          </svg>
+        </div>
+
+        {/* Bottom Shapes */}
+        <div className="absolute bottom-0 left-0 h-[50vh] w-full">
+          <svg
+            className="absolute bottom-0 left-0 h-full w-full object-cover"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,100 L100,100 L100,80 C70,40 60,90 40,70 C20,50 10,40 0,45 Z"
+              fill="#2e7bbf"
+              opacity="0.8"
+              style={{
+                filter: "drop-shadow(0px -10px 10px rgba(0,0,0,0.2))",
+              }}
+            />
+            <path
+              d="M0,100 L100,100 L100,60 C70,10 50,60 20,55 C10,52 5,45 0,30 Z"
+              fill="#054b8c"
+              style={{
+                filter: "drop-shadow(0px -10px 10px rgba(0,0,0,0.3))",
+              }}
+            />
+          </svg>
+        </div>
+
+        {/* Content */}
+        <h1
+          className={`z-10 text-center text-6xl font-extrabold text-white drop-shadow-xl transition-all duration-500 ${
+            fade ? "scale-95 opacity-0" : "scale-100 opacity-100"
           }`}
         >
-          {/* Top Shapes */}
-          <div className="absolute top-0 left-0 h-[50vh] w-full">
-            <svg
-              className="absolute top-0 left-0 h-full w-full object-cover"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0,0 L100,0 L100,20 C70,60 60,10 40,30 C20,50 10,60 0,55 Z"
-                fill="#2e7bbf"
-                opacity="0.8"
-                style={{ filter: "drop-shadow(0px 10px 10px rgba(0,0,0,0.2))" }}
-              />
-              <path
-                d="M0,0 L100,0 L100,40 C70,90 50,40 20,45 C10,48 5,55 0,70 Z"
-                fill="#054b8c"
-                style={{ filter: "drop-shadow(0px 10px 10px rgba(0,0,0,0.3))" }}
-              />
-            </svg>
-          </div>
+          {text}
+        </h1>
+      </div>
+    )
+  }
 
-          {/* Bottom Shapes */}
-          <div className="absolute bottom-0 left-0 h-[50vh] w-full">
-            <svg
-              className="absolute bottom-0 left-0 h-full w-full object-cover"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0,100 L100,100 L100,80 C70,40 60,90 40,70 C20,50 10,40 0,45 Z"
-                fill="#2e7bbf"
-                opacity="0.8"
-                style={{
-                  filter: "drop-shadow(0px -10px 10px rgba(0,0,0,0.2))",
-                }}
-              />
-              <path
-                d="M0,100 L100,100 L100,60 C70,10 50,60 20,55 C10,52 5,45 0,30 Z"
-                fill="#054b8c"
-                style={{
-                  filter: "drop-shadow(0px -10px 10px rgba(0,0,0,0.3))",
-                }}
-              />
-            </svg>
-          </div>
+  return (
+    <>
+      <AnimatedSplash
+        show={showSplash}
+        text="Hello!"
+        onDone={() => setShowSplash(false)}
+      />
 
-          <h1 className="z-10 text-6xl font-extrabold tracking-tight text-white drop-shadow-xl">
-            Hello!
-          </h1>
-        </div>
+      {showSuccess && (
+        <AnimatedSplash
+          show={showSuccess}
+          text="Your account is ready!"
+          onDone={() => navigate("/login")}
+        />
       )}
 
       {/* Main Form content */}
       <div
-        className="space-y-8 text-center"
-        style={{ display: showSplash ? "none" : "block" }}
+        className="space-y-1 text-center"
+        style={{ display: showSplash || showSuccess ? "none" : "block" }}
       >
-        <h1 className="text-3xl font-bold">{signupSteps[currentStep].title}</h1>
-        <h2>{signupSteps[currentStep].description}</h2>
+        <h1 className="text-4xl font-bold">{signupSteps[currentStep].title}</h1>
+        <h2 className="text-xl">{signupSteps[currentStep].description}</h2>
 
         <div className="py-8">
           <CurrentFormContent
@@ -570,11 +781,15 @@ export default function SignupPage() {
         </div>
 
         <Button
-          className="w-full shadow-2xl shadow-gray-500"
+          className="mt-12 w-full shadow-2xl shadow-gray-500"
+          size="lg"
           onClick={handleNext}
         >
-          {signupSteps[currentStep].buttonText ||
-            (currentStep < signupSteps.length - 1 ? "Next" : "Submit")}
+          {currentStep === signupSteps.length - 1
+            ? formData.avatar_upload
+              ? "Finish"
+              : "Upload"
+            : "Next"}
         </Button>
       </div>
     </>
