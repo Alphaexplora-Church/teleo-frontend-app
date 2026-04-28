@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router"
-import WelcomeScreen from "./view/WelcomePage"
-import LoginPage from "./view/LoginPage"
+import WelcomeScreen from "./pages/WelcomePage"
+import LoginPage from "./pages/LoginPage"
 import MainLayout from "./components/layouts/MainLayout"
-import SignupPage from "./view/SignupPage"
+import SignupView from "./signup/view/signup-view"
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup" element={<SignupView />} />
       </Route>
     </Routes>
   )
