@@ -39,7 +39,7 @@ export function LoginForm({
               required
             />
             <a
-              href="#"
+              href="/forgot-password"
               className="ml-auto inline-block text-sm text-blue-500 underline underline-offset-4"
             >
               Forgot Password

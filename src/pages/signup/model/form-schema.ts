@@ -21,7 +21,7 @@ export const formSchema = z
 
     area: z.string().min(2, "Please enter your location."),
 
-    email: z.string().email("That doesn’t look like a valid email."),
+    email: z.email("That doesn’t look like a valid email."),
 
     phone: z
       .string()

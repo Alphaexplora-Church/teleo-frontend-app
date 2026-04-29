@@ -25,7 +25,7 @@ export default function SignupView() {
 
       {/* Main */}
       {!vm.showSplash && !vm.showSuccess && (
-        <div className="space-y-2 text-center">
+        <div className="space-y-8 text-center">
           <h1 className="text-4xl font-bold">{CurrentStep.title}</h1>
           <p className="text-lg">{CurrentStep.description}</p>
 
