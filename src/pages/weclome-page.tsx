@@ -21,7 +21,7 @@ function SplashScreen({ onDone }: { onDone: () => void }) {
         fade ? "opacity-0" : "opacity-100"
       }`}
     >
-      <img src={logo} alt="Teleo Logo" className="size-32" />
+      <img src={logo} alt="Teleo Logo" />
     </div>
   )
 }
@@ -33,11 +33,7 @@ export default function WelcomePage() {
     <>
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       <div className="space-y-8 text-center">
-        <img
-          src={logo}
-          alt="Teleo Logo"
-          className="mx-auto size-32 text-primary"
-        />
+        <img src={logo} alt="Teleo Logo" className="mx-auto text-primary" />
         <h1 className="text-2xl font-semibold">Welcome to Teleo!</h1>
         <div className="flex flex-col gap-4">
           <Button className="rounded-full" size="lg" asChild>
