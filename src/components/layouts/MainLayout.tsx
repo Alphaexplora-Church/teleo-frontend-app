@@ -3,7 +3,7 @@ import { Outlet } from "react-router"
 
 const MainLayout = () => {
   return (
-    <div className="app-containercontent flex min-h-svh w-full items-center justify-center p-5 md:p-10">
+    <div className="app-containercontent flex min-h-svh w-full items-center justify-center p-8 md:p-10">
       <main className="w-full max-w-sm">
         {/* This is where the magic happens: child routes render here */}
         <Outlet />

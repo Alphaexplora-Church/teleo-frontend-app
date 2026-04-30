@@ -1,12 +1,14 @@
-import NameForm from "../components/name-form"
-import BirthdayForm from "../components/birthday-form"
-import GenderForm from "../components/gender-form"
-import UsernameForm from "../components/username-form"
-import LocationForm from "../components/location-form"
-import ContactForm from "../components/contact-form"
-import PasswordForm from "../components/password-form"
-import OTPForm from "../components/otp-form"
-import AvatarUploadForm from "../components/avatar-upload-form"
+import {
+  NameForm,
+  BirthdayForm,
+  GenderForm,
+  UsernameForm,
+  LocationForm,
+  ContactForm,
+  PasswordForm,
+  OTPForm,
+  AvatarUploadForm,
+} from "../view/signup-view"
 
 type Step = {
   title: string

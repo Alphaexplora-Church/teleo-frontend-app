@@ -1,7 +1,4 @@
-import ContactForm from "../components/contact-form"
-import PasswordForm from "../components/password-form"
-import OTPForm from "../components/otp-form"
-import Success from "../components/success"
+import { ContactForm, OTPForm, PasswordForm, Success } from "../view/forgot-password-view"
 
 type Step = {
   Content: React.FC<any>

@@ -7,7 +7,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
 
 export function LoginForm({
   className,
@@ -46,21 +45,13 @@ export function LoginForm({
             </a>
           </Field>
           <Field>
-            <Button type="submit">Login</Button>
+            <Button type="submit" size="lg" className="rounded-full">Login</Button>
             <FieldDescription className="text-center">
-              Register your church?{" "}
+              Already have an account?{" "}
               <a href="/signup" className="text-blue-500 underline">
-                Sign up
+                Sign in
               </a>
             </FieldDescription>
-            <div className="flex justify-center">
-              <Link
-                to="/approval"
-                className="self-center text-sm text-blue-500 underline"
-              >
-                Check Approval Status
-              </Link>
-            </div>
           </Field>
         </FieldGroup>
       </form>
