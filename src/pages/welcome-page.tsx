@@ -39,7 +39,7 @@ export default function WelcomePage() {
         <img
           src={logo}
           alt="Teleo Logo"
-          className={`mx-auto text-primary w-[235px] transition-all duration-700 ease-out ${
+          className={`mx-auto text-primary w-[170px] transition-all duration-700 ease-out ${
             animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         />
@@ -55,38 +55,29 @@ export default function WelcomePage() {
             animate ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Button className="rounded-full" size="lg" asChild>
+          <Button size="lg" asChild>
             <Link to="/signup">Create a new Account</Link>
           </Button>
           <Button
-            variant="secondary"
-            className="rounded-full border-2 border-primary"
+            variant="outline"
+            className="border-[0.1px] border-primary"
             size="lg"
             asChild
           >
-            <Link to="/login">Log In</Link>
+            <Link to="/login" className="text-black">Log In</Link>
           </Button>
           <div className="flex items-center">
-            <hr className="grow border-t" />
-            <span className="mx-2 text-xs text-gray-500">OR</span>
-            <hr className="grow border-t" />
+            <hr className="grow border-t border-primary"  />
+            <span className="mx-2 text-xs text-primary">OR</span>
+            <hr className="grow border-t border-primary" />
           </div>
-          <Button variant="outline" className="rounded-full" size="lg">
+          <Button variant="outline" className="border-2 border-gray shadow-sm" size="lg">
             <img src={googleLogo} alt="Google" className="size-5 mr-1" />
             Sign in with Google
           </Button>
         </div>
 
-        <span
-          className={`transition-all duration-700 ease-out delay-300 ${
-            animate ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          Dont have an account?{" "}
-          <Link to="/signup" className="text-blue-500 underline">
-            Sign Up
-          </Link>
-        </span>
+
       </div>
     </>
   )
