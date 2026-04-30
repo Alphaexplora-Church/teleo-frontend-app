@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router"
-import WelcomeScreen from "./pages/weclome-page"
+import WelcomeScreen from "./pages/welcome-page"
 import LoginPage from "./pages/login-page"
 import MainLayout from "./components/layouts/MainLayout"
 import SignupView from "./pages/signup/view/signup-view"
