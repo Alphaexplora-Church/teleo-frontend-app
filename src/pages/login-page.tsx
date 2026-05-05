@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,8 +9,11 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import logoWithText from "@/assets/logo-with-text.jpg"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <>
       <div className="text-center">
@@ -34,12 +38,27 @@ export default function LoginPage() {
               <div className="flex items-center">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
               </div>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
               <a
                 href="/forgot-password"
                 className="ml-auto inline-block text-sm text-blue-500 underline underline-offset-4"

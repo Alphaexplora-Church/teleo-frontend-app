@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { Plus, Mars, Venus, VenusAndMars } from "lucide-react"
+import { Plus, Mars, Venus, VenusAndMars, Eye, EyeOff } from "lucide-react"
 import Picker from "react-mobile-picker"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
@@ -343,18 +343,36 @@ type PasswordFormProps = {
 }
 
 export function PasswordForm({ formData, setFormData, errors }: PasswordFormProps) {
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   return (
     <form className="space-y-4">
       <FieldGroup>
         <Field>
           <FieldLabel>Password</FieldLabel>
-          <Input
-            type="password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, password: e.target.value }))
-            }
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              className="pr-10"
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, password: e.target.value }))
+              }
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password}</p>
           )}
@@ -362,13 +380,28 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
 
         <Field>
           <FieldLabel>Confirm Password</FieldLabel>
-          <Input
-            type="password"
-            value={formData.confirm_password}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, confirm_password: e.target.value }))
-            }
-          />
+          <div className="relative">
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              value={formData.confirm_password}
+              className="pr-10"
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, confirm_password: e.target.value }))
+              }
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+              aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
           {errors.confirm_password && (
             <p className="text-sm text-red-500">{errors.confirm_password}</p>
           )}
