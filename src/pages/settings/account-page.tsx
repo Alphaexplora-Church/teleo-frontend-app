@@ -34,6 +34,12 @@ export default function AccountPage() {
             />
           </div>
         ))}
+        <label className="text-[14px] font-semibold">Pronouns</label>
+        <div className="flex font-medium">
+          <Button>He/Him</Button>
+          <Button variant="secondary">She/Her</Button>
+          <Button variant="secondary">They/Them</Button>
+        </div>
       </div>
       <Button size="lg" className="mt-4 w-full">
         Edit Profile
