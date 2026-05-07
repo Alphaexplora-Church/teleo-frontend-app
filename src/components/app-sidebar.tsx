@@ -22,7 +22,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router"
+import { LogoutButton } from "./logout-button"
 
 const data = {
   user: {
@@ -122,9 +122,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navSecondary} />
       </SidebarContent>
       <SidebarFooter>
-        <Link to="/logout" className="text-red-500">
-          Log Out
-        </Link>
+        <LogoutButton />
       </SidebarFooter>
     </Sidebar>
   )
