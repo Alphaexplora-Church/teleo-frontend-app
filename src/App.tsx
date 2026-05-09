@@ -8,7 +8,7 @@ import SignupView from "./pages/signup/view/signup-view"
 import ForgotPasswordView from "./pages/forgot-password/view/forgot-password-view"
 import AccountPage from "./pages/settings/account-page"
 import SettingsPage from "./pages/settings/settings-page"
-import SecurityPage from "./pages/settings/security-page"
+import SecurityPage from "./pages/settings/security/view/security-view"
 
 const App = () => {
   return (
