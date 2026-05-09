@@ -210,7 +210,7 @@ function EditModal({ fieldKey, onClose, vm }: EditModalProps) {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="w-full max-w-sm rounded-xl bg-background p-6 shadow-lg">
+      <div className="mx-4 w-[calc(100vw-2rem)] max-w-sm rounded-xl bg-background p-6 shadow-lg">
         <h2 className="mb-4 text-lg font-semibold">{stepTitles[vm.step]}</h2>
 
         {vm.step === "otp" && (
