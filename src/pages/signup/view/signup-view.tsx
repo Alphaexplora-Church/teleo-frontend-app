@@ -6,6 +6,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -412,9 +413,8 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
             <input
               type="checkbox"
               checked={formData.terms}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, terms: e.target.checked }))
-              }
+              readOnly
+              className="pointer-events-none"
             />
 
             <label className="ml-2 text-sm text-gray-600">
@@ -509,6 +509,19 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
                       By using our services, you acknowledge that you have read, understood,
                       and agreed to these Terms and Conditions.
                     </p>
+
+                    {/* Accept button */}
+                    <DrawerClose asChild>
+                      <Button
+                        size="lg"
+                        className="w-full"
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, terms: true }))
+                        }
+                      >
+                        I Accept
+                      </Button>
+                    </DrawerClose>
                   </div>
                 </DrawerContent>
               </Drawer>
