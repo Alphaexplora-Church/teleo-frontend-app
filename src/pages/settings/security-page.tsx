@@ -91,9 +91,7 @@ function OtpStep({
         disabled={timeLeft > 0}
         className="text-sm text-muted-foreground disabled:opacity-50"
       >
-        {timeLeft > 0
-          ? `Resend code within ${timeLeft}s`
-          : "Resend code"}
+        {timeLeft > 0 ? `Resend code within ${timeLeft}s` : "Resend code"}
       </button>
     </div>
   )
@@ -103,7 +101,13 @@ function OtpStep({
 
 const fieldConfig: Record<
   FieldKey,
-  { oldLabel: string; newLabel: string; oldPlaceholder: string; newPlaceholder: string; inputType: string }
+  {
+    oldLabel: string
+    newLabel: string
+    oldPlaceholder: string
+    newPlaceholder: string
+    inputType: string
+  }
 > = {
   Email: {
     oldLabel: "Old Email",
@@ -253,36 +257,32 @@ function EditModal({
 // ─── SecurityPage ─────────────────────────────────────────────────────────────
 
 export default function SecurityPage() {
+  const [isEditing, setIsEditing] = useState(false)
   const [activeField, setActiveField] = useState<FieldKey | null>(null)
 
   const content: { label: FieldKey; placeholder: string }[] = [
-    {
-      label: "Email",
-      placeholder: "juandelacruz1999@yahoo.com",
-    },
-    {
-      label: "Phone Number",
-      placeholder: "+63 | 09123467485",
-    },
-    {
-      label: "Password",
-      placeholder: "********",
-    },
+    { label: "Email", placeholder: "juandelacruz1999@yahoo.com" },
+    { label: "Phone Number", placeholder: "+63 | 09123467485" },
+    { label: "Password", placeholder: "********" },
   ]
 
+  const handleEditToggle = () => {
+    setIsEditing((prev) => !prev)
+  }
+
   return (
-    <div>
-      <div className="space-y-4">
-        {content.map((item) => (
-          <div key={item.label}>
-            <label className="text-[14px] font-semibold">{item.label}</label>
-            <div className="relative mt-1">
-              <Input
-                type="text"
-                placeholder={item.placeholder}
-                readOnly
-                className="block w-full rounded-md border-gray-300 pr-10 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
+    <div className="space-y-4">
+      {content.map((item) => (
+        <div key={item.label}>
+          <label className="text-[14px] font-semibold">{item.label}</label>
+          <div className="relative mt-1">
+            <Input
+              type="text"
+              placeholder={item.placeholder}
+              readOnly
+              className="block w-full rounded-md border-gray-300 pr-10 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+            {isEditing && (
               <button
                 type="button"
                 aria-label={`Edit ${item.label}`}
@@ -291,10 +291,14 @@ export default function SecurityPage() {
               >
                 <Pencil className="h-4 w-4" />
               </button>
-            </div>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+
+      <Button size="lg" className="mt-4 w-full" onClick={handleEditToggle}>
+        {isEditing ? "Save Changes" : "Edit Profile"}
+      </Button>
 
       {activeField && (
         <EditModal
