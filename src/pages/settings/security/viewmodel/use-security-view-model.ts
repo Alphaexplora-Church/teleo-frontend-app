@@ -13,6 +13,7 @@ export function useSecurityViewModel() {
   const [otp, setOtp] = useState("")
   const [oldValue, setOldValue] = useState("")
   const [newValue, setNewValue] = useState("")
+  const [confirmValue, setConfirmValue] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const [otpTimeLeft, setOtpTimeLeft] = useState(300)
@@ -27,6 +28,7 @@ export function useSecurityViewModel() {
     setOtp("")
     setOldValue("")
     setNewValue("")
+    setConfirmValue("")
     setErrors({})
     setOtpTimeLeft(300)
   }
@@ -54,7 +56,7 @@ export function useSecurityViewModel() {
     if (!activeField) return
 
     const schema = formSchemas[activeField]
-    const result = schema.safeParse({ oldValue, newValue })
+    const result = schema.safeParse({ oldValue, newValue, confirmValue })
 
     if (!result.success) {
       const fieldErrors: Record<string, string> = {}
@@ -88,6 +90,7 @@ export function useSecurityViewModel() {
     otp,
     oldValue,
     newValue,
+    confirmValue,
     errors,
     otpTimeLeft,
 
@@ -95,6 +98,7 @@ export function useSecurityViewModel() {
     setOtp,
     setOldValue,
     setNewValue,
+    setConfirmValue,
     setOtpTimeLeft,
     toggleEditing,
     openModal,

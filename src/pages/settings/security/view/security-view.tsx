@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react"
-import { Pencil, CheckCircle2 } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Pencil, CheckCircle2, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { FieldKey } from "../model/security-field-keys"
@@ -110,8 +110,10 @@ type FormStepProps = {
   fieldKey: FieldKey
   oldValue: string
   newValue: string
+  confirmValue: string
   setOldValue: (v: string) => void
   setNewValue: (v: string) => void
+  setConfirmValue: (v: string) => void
   errors: Record<string, string>
   onSave: () => void
 }
@@ -120,24 +122,46 @@ export function FormStep({
   fieldKey,
   oldValue,
   newValue,
+  confirmValue,
   setOldValue,
   setNewValue,
+  setConfirmValue,
   errors,
   onSave,
 }: FormStepProps) {
   const config = fieldConfig[fieldKey]
+  const isPassword = fieldKey === "Password"
+
+  const [showOld, setShowOld] = useState(false)
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+
+  const oldType = isPassword ? (showOld ? "text" : "password") : config.inputType
+  const newType = isPassword ? (showNew ? "text" : "password") : config.inputType
 
   return (
     <div className="flex flex-col gap-4">
       <div>
         <label className="text-[14px] font-semibold">{config.oldLabel}</label>
-        <Input
-          type={config.inputType}
-          placeholder={config.oldPlaceholder}
-          value={oldValue}
-          onChange={(e) => setOldValue(e.target.value)}
-          className="mt-1"
-        />
+        <div className="relative mt-1">
+          <Input
+            type={oldType}
+            placeholder={config.oldPlaceholder}
+            value={oldValue}
+            onChange={(e) => setOldValue(e.target.value)}
+            className={isPassword ? "pr-10" : ""}
+          />
+          {isPassword && (
+            <button
+              type="button"
+              aria-label={showOld ? "Hide password" : "Show password"}
+              onClick={() => setShowOld((v) => !v)}
+              className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+            >
+              {showOld ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          )}
+        </div>
         {errors.oldValue && (
           <p className="text-sm text-red-500">{errors.oldValue}</p>
         )}
@@ -145,17 +169,55 @@ export function FormStep({
 
       <div>
         <label className="text-[14px] font-semibold">{config.newLabel}</label>
-        <Input
-          type={config.inputType}
-          placeholder={config.newPlaceholder}
-          value={newValue}
-          onChange={(e) => setNewValue(e.target.value)}
-          className="mt-1"
-        />
+        <div className="relative mt-1">
+          <Input
+            type={newType}
+            placeholder={config.newPlaceholder}
+            value={newValue}
+            onChange={(e) => setNewValue(e.target.value)}
+            className={isPassword ? "pr-10" : ""}
+          />
+          {isPassword && (
+            <button
+              type="button"
+              aria-label={showNew ? "Hide password" : "Show password"}
+              onClick={() => setShowNew((v) => !v)}
+              className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+            >
+              {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          )}
+        </div>
         {errors.newValue && (
           <p className="text-sm text-red-500">{errors.newValue}</p>
         )}
       </div>
+
+      {isPassword && (
+        <div>
+          <label className="text-[14px] font-semibold">Confirm New Password</label>
+          <div className="relative mt-1">
+            <Input
+              type={showConfirm ? "text" : "password"}
+              placeholder="Re-enter new password"
+              value={confirmValue}
+              onChange={(e) => setConfirmValue(e.target.value)}
+              className="pr-10"
+            />
+            <button
+              type="button"
+              aria-label={showConfirm ? "Hide password" : "Show password"}
+              onClick={() => setShowConfirm((v) => !v)}
+              className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
+            >
+              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+          {errors.confirmValue && (
+            <p className="text-sm text-red-500">{errors.confirmValue}</p>
+          )}
+        </div>
+      )}
 
       <Button size="lg" className="mt-2 w-full" onClick={onSave}>
         Save changes
@@ -230,8 +292,10 @@ function EditModal({ fieldKey, onClose, vm }: EditModalProps) {
             fieldKey={fieldKey}
             oldValue={vm.oldValue}
             newValue={vm.newValue}
+            confirmValue={vm.confirmValue}
             setOldValue={vm.setOldValue}
             setNewValue={vm.setNewValue}
+            setConfirmValue={vm.setConfirmValue}
             errors={vm.errors}
             onSave={vm.saveChanges}
           />
