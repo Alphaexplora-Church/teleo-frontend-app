@@ -9,6 +9,7 @@ import ForgotPasswordView from "./pages/forgot-password/view/forgot-password-vie
 import AccountPage from "./pages/settings/account-page"
 import SettingsPage from "./pages/settings/settings-page"
 import SecurityPage from "./pages/settings/security/view/security-view"
+import LandingPage from "./pages/landing/landing-page"
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupView />} />
         <Route path="/forgot-password" element={<ForgotPasswordView />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/security" element={<SecurityPage />} />

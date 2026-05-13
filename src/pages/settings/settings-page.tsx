@@ -44,7 +44,7 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <div className="space-y-4">
+      <div className="space-y-2">
         {content.map((item, index) => (
           <Link
             to={item.link}
@@ -54,7 +54,7 @@ export default function SettingsPage() {
             <div className="mr-4 text-muted-foreground">{item.icon}</div>
 
             <div>
-              <h2 className="font-[poppins] text-[14px] font-semibold">
+              <h2 className="font-[poppins] text-[12px] font-semibold">
                 {item.title}
               </h2>
               <span className="text-[8.63px] text-muted-foreground">
