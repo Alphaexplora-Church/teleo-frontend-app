@@ -10,6 +10,7 @@ import AccountPage from "./pages/settings/account-page"
 import SettingsPage from "./pages/settings/settings-page"
 import SecurityPage from "./pages/settings/security/view/security-view"
 import LandingPage from "./pages/landing/landing-page"
+import NotificationsPage from "./pages/notifications-page"
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/security" element={<SecurityPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+
       </Route>
     </Routes>
   )
