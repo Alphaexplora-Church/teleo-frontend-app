@@ -13,7 +13,7 @@ const MainLayout = () => {
       {/* Wrap everything that might use a Tooltip here */}
       <TooltipProvider>
         <AppSidebar />
-        <div className="flex min-h-svh w-full justify-center p-10">
+        <div className="flex min-h-svh w-full justify-center p-4 sm:p-10">
           <main className="w-full max-w-sm">
             <Outlet />
           </main>
