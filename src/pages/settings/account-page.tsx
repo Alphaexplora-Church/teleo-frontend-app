@@ -1,6 +1,14 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 // Simulated database record
 const initialUserData = {
@@ -24,6 +32,7 @@ export default function AccountPage() {
   const [userData, setUserData] = useState(initialUserData)
   const [draft, setDraft] = useState(initialUserData)
   const [isEditing, setIsEditing] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   function handleEditProfile() {
     setDraft(userData)
@@ -31,9 +40,14 @@ export default function AccountPage() {
   }
 
   function handleSaveChanges() {
+    setIsDialogOpen(true)
+  }
+
+  function handleConfirmSave() {
     // Persist draft back to the "database" (state)
     setUserData(draft)
     setIsEditing(false)
+    setIsDialogOpen(false)
   }
 
   return (
@@ -85,6 +99,23 @@ export default function AccountPage() {
       >
         {isEditing ? "Save Changes" : "Edit Profile"}
       </Button>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save Changes</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to save your profile changes?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmSave}>Confirm</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
