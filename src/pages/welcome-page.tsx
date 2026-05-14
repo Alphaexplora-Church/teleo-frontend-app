@@ -41,7 +41,7 @@ export default function WelcomePage() {
           }}
         />
       )}
-      <div className="space-y-8 text-center">
+      <div className="flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center space-y-8 text-center">
         <img
           src={logo}
           alt="Teleo Logo"
@@ -57,7 +57,7 @@ export default function WelcomePage() {
           Welcome to Teleo!
         </h1>
         <div
-          className={`flex flex-col gap-4 transition-all delay-200 duration-700 ease-out ${
+          className={`flex w-full flex-col gap-4 transition-all delay-200 duration-700 ease-out ${
             animate ? "opacity-100" : "opacity-0"
           }`}
         >
