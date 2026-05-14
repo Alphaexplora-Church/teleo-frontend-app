@@ -5,12 +5,14 @@ import MainLayout from "./components/layouts/MainLayout"
 import WelcomePage from "./pages/welcome-page"
 import LoginPage from "./pages/login-page"
 import SignupView from "./pages/signup/view/signup-view"
+import TermsPage from "./pages/terms-page"
 import ForgotPasswordView from "./pages/forgot-password/view/forgot-password-view"
 import AccountPage from "./pages/settings/account-page"
 import SettingsPage from "./pages/settings/settings-page"
 import SecurityPage from "./pages/settings/security/view/security-view"
 import LandingPage from "./pages/landing/landing-page"
 import NotificationsPage from "./pages/notifications-page"
+
 
 const App = () => {
   return (
@@ -19,6 +21,7 @@ const App = () => {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupView />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordView />} />
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/settings" element={<SettingsPage />} />
