@@ -84,12 +84,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
-                  <User className="size-4" />
+              <a href="#" className="flex flex-col items-center justify-center gap-2 py-4 h-auto">
+                <div className="flex aspect-square size-13 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
+                  <User className="w-full" />
                 </div>
-
-                <span className="truncate font-medium">Juan Dela Cruz</span>
+                <span className="font-medium text-base">Juan Dela Cruz</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
