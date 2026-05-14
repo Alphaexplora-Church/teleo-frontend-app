@@ -311,7 +311,7 @@ export function ContactForm({
   setErrors,
 }: ContactFormProps) {
   return (
-    <form className="space-y-4">
+    <form>
       <FieldGroup>
         <FieldLabel>Email</FieldLabel>
         <Field>
@@ -389,6 +389,7 @@ export function PasswordForm({
               type={showPassword ? "text" : "password"}
               value={formData.password}
               className="pr-10"
+              placeholder="password"
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, password: e.target.value }))
               }
@@ -418,6 +419,7 @@ export function PasswordForm({
               type={showConfirmPassword ? "text" : "password"}
               value={formData.confirm_password}
               className="pr-10"
+              placeholder="confirm password"
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
@@ -765,8 +767,8 @@ export default function SignupView() {
 
       {/* Main */}
       {!vm.showSplash && !vm.showSuccess && (
-        <div className="space-y-8 text-center">
-          <h1 className="text-[30px] font-bold">{CurrentStep.title}</h1>
+        <div className="text-center">
+          <h1 className="text-[24px] font-bold">{CurrentStep.title}</h1>
           <p className="text-[20px]">{CurrentStep.description}</p>
 
           <div className="py-8">
