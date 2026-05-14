@@ -724,11 +724,11 @@ export function AvatarUploadForm({
 
   return (
     <div className="flex flex-col items-center">
-      <label className="flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border">
+      <label className="flex size-48 cursor-pointer items-center justify-center rounded-full border-[#4D2C23] border-2">
         {preview ? (
           <img src={preview} className="h-full w-full object-cover" />
         ) : (
-          <Plus />
+          <Plus className="size-16 text-gray-500" />
         )}
         <input
           type="file"
