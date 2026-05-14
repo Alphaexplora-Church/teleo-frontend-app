@@ -136,8 +136,16 @@ export function FormStep({
   const [showNew, setShowNew] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
-  const oldType = isPassword ? (showOld ? "text" : "password") : config.inputType
-  const newType = isPassword ? (showNew ? "text" : "password") : config.inputType
+  const oldType = isPassword
+    ? showOld
+      ? "text"
+      : "password"
+    : config.inputType
+  const newType = isPassword
+    ? showNew
+      ? "text"
+      : "password"
+    : config.inputType
 
   return (
     <div className="flex flex-col gap-4">
@@ -158,7 +166,11 @@ export function FormStep({
               onClick={() => setShowOld((v) => !v)}
               className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
             >
-              {showOld ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showOld ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           )}
         </div>
@@ -184,7 +196,11 @@ export function FormStep({
               onClick={() => setShowNew((v) => !v)}
               className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
             >
-              {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showNew ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           )}
         </div>
@@ -195,7 +211,9 @@ export function FormStep({
 
       {isPassword && (
         <div>
-          <label className="text-[14px] font-semibold">Confirm New Password</label>
+          <label className="text-[14px] font-semibold">
+            Confirm New Password
+          </label>
           <div className="relative mt-1">
             <Input
               type={showConfirm ? "text" : "password"}
@@ -210,7 +228,11 @@ export function FormStep({
               onClick={() => setShowConfirm((v) => !v)}
               className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
             >
-              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showConfirm ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.confirmValue && (
@@ -348,11 +370,7 @@ export default function SecurityView() {
       </Button>
 
       {vm.activeField && (
-        <EditModal
-          fieldKey={vm.activeField}
-          onClose={vm.closeModal}
-          vm={vm}
-        />
+        <EditModal fieldKey={vm.activeField} onClose={vm.closeModal} vm={vm} />
       )}
     </div>
   )
