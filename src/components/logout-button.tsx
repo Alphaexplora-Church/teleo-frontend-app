@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { useSidebar } from "@/components/ui/sidebar"
 import logo from "@/assets/logo.png"
+import { DoorOpen } from "lucide-react"
 
 export function LogoutButton() {
   const [open, setOpen] = useState(false)
@@ -30,9 +31,13 @@ export function LogoutButton() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       {/* asChild prevents the Trigger from rendering its own button tag */}
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="justify-end">
         <Button variant="ghost" className="text-red-500">
+          <div className="flex flex-row gap-2">
           Log Out
+          <DoorOpen />
+          </div>
+
         </Button>
       </DialogTrigger>
 
