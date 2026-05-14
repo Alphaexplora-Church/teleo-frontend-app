@@ -103,8 +103,18 @@ export function NameForm({ formData, setFormData, errors }: NameFormProps) {
 // ─── BirthdayForm ─────────────────────────────────────────────────────────────
 
 const months = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ]
 const days = Array.from({ length: 31 }, (_, i) => i + 1)
 const years = Array.from({ length: 100 }, (_, i) => 2024 - i)
@@ -118,7 +128,11 @@ type BirthdayFormProps = {
 }
 
 export function BirthdayForm({ setFormData, errors }: BirthdayFormProps) {
-  const [value, setValue] = useState<PickerValue>({ month: "September", day: 17, year: 2021 })
+  const [value, setValue] = useState<PickerValue>({
+    month: "September",
+    day: 17,
+    year: 2021,
+  })
 
   const handleChange = (next: PickerValue) => {
     setValue(next)
@@ -135,19 +149,25 @@ export function BirthdayForm({ setFormData, errors }: BirthdayFormProps) {
       <Picker value={value} onChange={handleChange}>
         <Picker.Column name="month">
           {months.map((m) => (
-            <Picker.Item key={m} value={m}>{m}</Picker.Item>
+            <Picker.Item key={m} value={m}>
+              {m}
+            </Picker.Item>
           ))}
         </Picker.Column>
 
         <Picker.Column name="day">
           {days.map((d) => (
-            <Picker.Item key={d} value={d}>{d}</Picker.Item>
+            <Picker.Item key={d} value={d}>
+              {d}
+            </Picker.Item>
           ))}
         </Picker.Column>
 
         <Picker.Column name="year">
           {years.map((y) => (
-            <Picker.Item key={y} value={y}>{y}</Picker.Item>
+            <Picker.Item key={y} value={y}>
+              {y}
+            </Picker.Item>
           ))}
         </Picker.Column>
       </Picker>
@@ -219,7 +239,11 @@ type UsernameFormProps = {
   errors: Errors
 }
 
-export function UsernameForm({ formData, setFormData, errors }: UsernameFormProps) {
+export function UsernameForm({
+  formData,
+  setFormData,
+  errors,
+}: UsernameFormProps) {
   return (
     <form>
       <FieldGroup>
@@ -248,7 +272,11 @@ type LocationFormProps = {
   errors: Errors
 }
 
-export function LocationForm({ formData, setFormData, errors }: LocationFormProps) {
+export function LocationForm({
+  formData,
+  setFormData,
+  errors,
+}: LocationFormProps) {
   return (
     <form>
       <FieldGroup>
@@ -343,7 +371,11 @@ type PasswordFormProps = {
   errors: Errors
 }
 
-export function PasswordForm({ formData, setFormData, errors }: PasswordFormProps) {
+export function PasswordForm({
+  formData,
+  setFormData,
+  errors,
+}: PasswordFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -387,14 +419,21 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
               value={formData.confirm_password}
               className="pr-10"
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, confirm_password: e.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  confirm_password: e.target.value,
+                }))
               }
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground"
-              aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+              aria-label={
+                showConfirmPassword
+                  ? "Hide confirm password"
+                  : "Show confirm password"
+              }
             >
               {showConfirmPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -428,12 +467,14 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
 
                 <DrawerContent className="p-4">
                   <DrawerHeader>
-                    <DrawerTitle className="text-2xl font-bold">Terms and Conditions</DrawerTitle>
+                    <DrawerTitle className="text-2xl font-bold">
+                      Terms and Conditions
+                    </DrawerTitle>
                   </DrawerHeader>
 
-                  <div className="overflow-y-auto max-h-[65vh] px-4 pb-8 text-sm space-y-4">
+                  <div className="max-h-[65vh] space-y-4 overflow-y-auto px-4 pb-8 text-sm">
                     {/* Send by Email */}
-                    <p className="text-center text-blue-500 underline cursor-pointer">
+                    <p className="cursor-pointer text-center text-blue-500 underline">
                       Send by Email
                     </p>
 
@@ -441,73 +482,115 @@ export function PasswordForm({ formData, setFormData, errors }: PasswordFormProp
 
                     {/* Important notice */}
                     <div>
-                      <p className="font-bold uppercase text-xs">Important</p>
+                      <p className="text-xs font-bold uppercase">Important</p>
                       <p className="mt-1 text-muted-foreground">
-                        Please read the following terms. By proceeding with this sign up process,
-                        you are agreeing to be bound by the Teleo Terms and Conditions.
+                        Please read the following terms. By proceeding with this
+                        sign up process, you are agreeing to be bound by the
+                        Teleo Terms and Conditions.
                       </p>
                     </div>
 
                     <hr />
 
                     {/* Section heading */}
-                    <h2 className="text-lg font-bold text-blue-500">A. Teleo Terms and Conditions</h2>
+                    <h2 className="text-lg font-bold text-blue-500">
+                      A. Teleo Terms and Conditions
+                    </h2>
 
                     <hr />
 
                     {/* Intro */}
                     <p>
-                      Welcome to Teleo! These Terms and Conditions govern your use of our
-                      application and services. By accessing or using our services, you agree
-                      to be bound by these terms.
+                      Welcome to Teleo! These Terms and Conditions govern your
+                      use of our application and services. By accessing or using
+                      our services, you agree to be bound by these terms.
                     </p>
 
                     {/* Bullet group 1 — Use */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>You must be at least 12 years old to use our services.</li>
-                      <li>You agree not to misuse our services or use them for any illegal or unauthorized purposes.</li>
-                      <li>We reserve the right to suspend or terminate access to our services for any violation of these terms.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        You must be at least 12 years old to use our services.
+                      </li>
+                      <li>
+                        You agree not to misuse our services or use them for any
+                        illegal or unauthorized purposes.
+                      </li>
+                      <li>
+                        We reserve the right to suspend or terminate access to
+                        our services for any violation of these terms.
+                      </li>
                     </ul>
 
                     {/* Bullet group 2 — IP */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>All content, trademarks, and intellectual property on our platform are owned by Teleo or licensed to us.</li>
-                      <li>You may not copy, distribute, or exploit any part of our content without our prior written permission.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        All content, trademarks, and intellectual property on
+                        our platform are owned by Teleo or licensed to us.
+                      </li>
+                      <li>
+                        You may not copy, distribute, or exploit any part of our
+                        content without our prior written permission.
+                      </li>
                     </ul>
 
                     {/* Bullet group 3 — Liability */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>We do not guarantee the accuracy, completeness, or reliability of our services.</li>
-                      <li>We are not liable for any direct, indirect, or incidental damages arising from your use of our services.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        We do not guarantee the accuracy, completeness, or
+                        reliability of our services.
+                      </li>
+                      <li>
+                        We are not liable for any direct, indirect, or
+                        incidental damages arising from your use of our
+                        services.
+                      </li>
                     </ul>
 
                     {/* Bullet group 4 — Privacy */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Your use of our services is also governed by our Privacy Policy, which explains how we collect, use, and protect your data.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        Your use of our services is also governed by our Privacy
+                        Policy, which explains how we collect, use, and protect
+                        your data.
+                      </li>
                     </ul>
 
                     {/* Bullet group 5 — Changes */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>We reserve the right to update or modify these terms at any time. Changes will be effective upon posting on our website.</li>
-                      <li>Continued use of our services after any modifications constitutes acceptance of the new terms.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        We reserve the right to update or modify these terms at
+                        any time. Changes will be effective upon posting on our
+                        website.
+                      </li>
+                      <li>
+                        Continued use of our services after any modifications
+                        constitutes acceptance of the new terms.
+                      </li>
                     </ul>
 
                     {/* Bullet group 6 — Governing law */}
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>These terms are governed by the laws of R.A. 8293.</li>
-                      <li>Any disputes arising under these terms will be subject to the exclusive jurisdiction of the courts in R.A. 7394.</li>
+                    <ul className="list-disc space-y-1 pl-5">
+                      <li>
+                        These terms are governed by the laws of R.A. 8293.
+                      </li>
+                      <li>
+                        Any disputes arising under these terms will be subject
+                        to the exclusive jurisdiction of the courts in R.A.
+                        7394.
+                      </li>
                     </ul>
 
                     {/* Contact */}
                     <p>
-                      If you have any questions about these terms, please contact us at{" "}
+                      If you have any questions about these terms, please
+                      contact us at{" "}
                       <span className="text-blue-500">teleo@gmail.com</span>.
                     </p>
 
                     {/* Closing */}
                     <p>
-                      By using our services, you acknowledge that you have read, understood,
-                      and agreed to these Terms and Conditions.
+                      By using our services, you acknowledge that you have read,
+                      understood, and agreed to these Terms and Conditions.
                     </p>
 
                     {/* Accept button */}
@@ -589,7 +672,9 @@ export function OTPForm({ formData, setFormData, errors }: OTPFormProps) {
         {[...Array(6)].map((_, i) => (
           <Input
             key={i}
-            ref={(el) => { inputsRef.current[i] = el }}
+            ref={(el) => {
+              inputsRef.current[i] = el
+            }}
             maxLength={1}
             className="h-12 w-12 text-center"
             value={(formData.otp ?? "")[i] || ""}
@@ -615,7 +700,10 @@ type AvatarUploadFormProps = {
   setFormData: SetFormData
 }
 
-export function AvatarUploadForm({ formData, setFormData }: AvatarUploadFormProps) {
+export function AvatarUploadForm({
+  formData,
+  setFormData,
+}: AvatarUploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null)
 
   const handleFile = (file?: File) => {
@@ -678,8 +766,8 @@ export default function SignupView() {
       {/* Main */}
       {!vm.showSplash && !vm.showSuccess && (
         <div className="space-y-8 text-center">
-          <h1 className="text-[35px] font-bold" >{CurrentStep.title}</h1>
-          <p className="text-xl">{CurrentStep.description}</p>
+          <h1 className="text-[30px] font-bold">{CurrentStep.title}</h1>
+          <p className="text-[20px]">{CurrentStep.description}</p>
 
           <div className="py-8">
             <CurrentForm

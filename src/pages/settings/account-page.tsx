@@ -67,7 +67,8 @@ export default function AccountPage() {
                 variant={isSelected ? "default" : "secondary"}
                 disabled={!isEditing}
                 onClick={() =>
-                  isEditing && setDraft((prev) => ({ ...prev, pronouns: option }))
+                  isEditing &&
+                  setDraft((prev) => ({ ...prev, pronouns: option }))
                 }
               >
                 {option}

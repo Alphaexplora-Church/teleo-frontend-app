@@ -4,7 +4,6 @@ import { Link } from "react-router"
 import logo from "@/assets/logo.png"
 import googleLogo from "@/assets/google.svg"
 
-
 function SplashScreen({ onDone }: { onDone: () => void }) {
   const [fade, setFade] = useState(false)
 
@@ -34,24 +33,31 @@ export default function WelcomePage() {
 
   return (
     <>
-      {showSplash && <SplashScreen onDone={() => { setShowSplash(false); setAnimate(true) }} />}
-      <div className="space-y-8 text-center"  >
+      {showSplash && (
+        <SplashScreen
+          onDone={() => {
+            setShowSplash(false)
+            setAnimate(true)
+          }}
+        />
+      )}
+      <div className="space-y-8 text-center">
         <img
           src={logo}
           alt="Teleo Logo"
-          className={`mx-auto text-primary w-[170px] transition-all duration-700 ease-out ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          className={`mx-auto w-[170px] text-primary transition-all duration-700 ease-out ${
+            animate ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         />
         <h1
-          className={`text-2xl font-semibold transition-all duration-700 ease-out delay-100 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
+          className={`text-2xl font-semibold transition-all delay-100 duration-700 ease-out ${
+            animate ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"
           }`}
         >
           Welcome to Teleo!
         </h1>
         <div
-          className={`flex flex-col gap-4 transition-all duration-700 ease-out delay-200 ${
+          className={`flex flex-col gap-4 transition-all delay-200 duration-700 ease-out ${
             animate ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -64,20 +70,24 @@ export default function WelcomePage() {
             size="lg"
             asChild
           >
-            <Link to="/login" className="text-black">Log In</Link>
+            <Link to="/login" className="text-black">
+              Log In
+            </Link>
           </Button>
           <div className="flex items-center">
-            <hr className="grow border-t border-primary"  />
+            <hr className="grow border-t border-primary" />
             <span className="mx-2 text-xs text-primary">OR</span>
             <hr className="grow border-t border-primary" />
           </div>
-          <Button variant="outline" className="border-2 border-gray shadow-sm" size="lg">
-            <img src={googleLogo} alt="Google" className="size-5 mr-1" />
+          <Button
+            variant="outline"
+            className="border-2 border-gray-400 shadow-sm"
+            size="lg"
+          >
+            <img src={googleLogo} alt="Google" className="mr-1 size-5" />
             Sign in with Google
           </Button>
         </div>
-
-
       </div>
     </>
   )
