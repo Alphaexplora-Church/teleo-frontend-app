@@ -43,25 +43,27 @@ export default function SettingsPage() {
   ]
 
   return (
-    <div>
-      <div className="space-y-2">
+    <div className="px-3 py-2">
+      <div className="space-y-3">
         {content.map((item, index) => (
           <Link
             to={item.link}
             key={index}
-            className="flex flex-row items-center rounded-lg border p-4"
+            className="flex flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-sm"
           >
-            <div className="mr-4 text-muted-foreground">{item.icon}</div>
+            <div className="mr-3 shrink-0 text-gray-400 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:stroke-[1.5]">
+              {item.icon}
+            </div>
 
-            <div>
-              <h2 className="font-[poppins] text-[12px] font-semibold">
+            <div className="flex min-w-0 flex-1 flex-col">
+              <h2 className="font-[poppins] text-[11.5px] font-semibold leading-snug text-gray-900">
                 {item.title}
               </h2>
-              <span className="text-[8.63px] text-muted-foreground">
+              <span className="text-[9.5px] leading-tight text-gray-400">
                 {item.description}
               </span>
             </div>
-            <ChevronRight className="ml-auto text-muted-foreground" />
+            <ChevronRight className="ml-2 h-4 w-4 shrink-0 text-gray-400 stroke-[1.5]" />
           </Link>
         ))}
       </div>
