@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Pencil, CheckCircle2, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import PageHeader from "@/components/page-header"
 import type { FieldKey } from "../model/security-field-keys"
 import {
   fieldConfig,
@@ -341,6 +342,7 @@ export default function SecurityView() {
 
   return (
     <div className="space-y-4">
+      <PageHeader title="Security" backTo="/settings" />
       {securityContent.map((item) => (
         <div key={item.label}>
           <label className="text-[14px] font-semibold">{item.label}</label>

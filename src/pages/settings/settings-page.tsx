@@ -7,6 +7,7 @@ import {
   ChevronRight,
 } from "lucide-react"
 import { Link } from "react-router"
+import PageHeader from "@/components/page-header"
 
 export default function SettingsPage() {
   const content = [
@@ -44,6 +45,7 @@ export default function SettingsPage() {
 
   return (
     <div className="px-3 py-2">
+      <PageHeader title="Settings" backTo="/landing" />
       <div className="space-y-3">
         {content.map((item, index) => (
           <Link

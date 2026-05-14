@@ -769,7 +769,7 @@ export default function SignupView() {
 
       {/* Main */}
       {!vm.showSplash && !vm.showSuccess && (
-        <div className="text-center">
+        <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center text-center">
           <h1 className="text-[24px] font-bold">{CurrentStep.title}</h1>
           <p className="text-[20px]">{CurrentStep.description}</p>
 

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import PageHeader from "@/components/page-header"
 
 type ToggleProps = {
   enabled: boolean
@@ -46,15 +47,18 @@ function NotificationRow({ label, description }: NotificationRowProps) {
 
 export default function NotificationsPage() {
   return (
-    <div className="space-y-1 divide-y">
-      <NotificationRow
-        label="Push Notifications"
-        description="Receive push notifications"
-      />
-      <NotificationRow
-        label="Push Notifications"
-        description="Receive push notifications"
-      />
+    <div>
+      <PageHeader title="Notifications" backTo="/settings" />
+      <div className="space-y-1 divide-y">
+        <NotificationRow
+          label="Push Notifications"
+          description="Receive push notifications"
+        />
+        <NotificationRow
+          label="Push Notifications"
+          description="Receive push notifications"
+        />
+      </div>
     </div>
   )
 }

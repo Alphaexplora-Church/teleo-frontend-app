@@ -3,6 +3,7 @@ import { CircleCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import PageHeader from "@/components/page-header"
 import type { FormData } from "../model/form-schema"
 import { forgotPasswordSteps } from "../model/forgot-password-steps"
 import { useForgotPasswordViewModel } from "../viewmodel/use-forgot-password-view-model"
@@ -219,8 +220,13 @@ export default function ForgotPasswordView() {
     Math.min(vm.currentStep, forgotPasswordSteps.length - 1)
   ].Content
 
+  const stepTitles = ["Forgot Password", "Verify OTP", "New Password", "Done"]
+  const title = stepTitles[Math.min(vm.currentStep, stepTitles.length - 1)]
+
   return (
-    <div className="space-y-2 text-center">
+    <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center">
+      <PageHeader title={title} backTo="/login" />
+
       <div className="py-8">
         <CurrentForm
           formData={vm.formData}

@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import PageHeader from "@/components/page-header"
 
 // Simulated database record
 const initialUserData = {
@@ -52,6 +53,7 @@ export default function AccountPage() {
 
   return (
     <div>
+      <PageHeader title="Account" backTo="/settings" />
       <div className="space-y-4">
         {fields.map((field) => (
           <div key={field.key}>
