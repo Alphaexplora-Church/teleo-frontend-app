@@ -60,7 +60,7 @@ export const signupSteps: Step[] = [
   },
   {
     title: "Lastly, put a face to the name!",
-    description: "Upload a photo.",
+    description: "",
     Content: AvatarUploadForm,
     buttonText: "Upload",
   },
