@@ -476,7 +476,11 @@ export function PasswordForm({
           )}
         </div>
 
-        <Drawer open={termsOpen} onOpenChange={setTermsOpen} shouldScaleBackground={false}>
+        <Drawer
+          open={termsOpen}
+          onOpenChange={setTermsOpen}
+          shouldScaleBackground={false}
+        >
           <DrawerContent className="p-4">
             <DrawerHeader>
               <DrawerTitle className="text-2xl font-bold">
@@ -607,7 +611,7 @@ export function AvatarUploadForm({
 
   return (
     <div className="flex flex-col items-center">
-      <label className="flex size-48 cursor-pointer items-center justify-center rounded-full border-[#4D2C23] border-2">
+      <label className="flex size-48 cursor-pointer items-center justify-center rounded-full border-2 border-[#4D2C23]">
         {preview ? (
           <img src={preview} className="h-full w-full object-cover" />
         ) : (
@@ -653,7 +657,7 @@ export default function SignupView() {
       {/* Main */}
       {!vm.showSplash && !vm.showSuccess && (
         <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center text-center">
-          <h1 className="text-[24px] font-bold">{CurrentStep.title}</h1>
+          <h1 className="text-3xl font-bold">{CurrentStep.title}</h1>
           <p className="text-[20px]">{CurrentStep.description}</p>
 
           <div className="py-8">
