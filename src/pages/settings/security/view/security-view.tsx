@@ -341,7 +341,7 @@ export default function SecurityView() {
   const vm = useSecurityViewModel()
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100svh-5rem)] flex-col gap-4">
       <PageHeader title="Security" backTo="/settings" />
       {securityContent.map((item) => (
         <div key={item.label}>
@@ -367,7 +367,7 @@ export default function SecurityView() {
         </div>
       ))}
 
-      <Button size="lg" className="mt-4 w-full" onClick={vm.toggleEditing}>
+      <Button size="lg" className="mt-auto w-full" onClick={vm.toggleEditing}>
         {vm.isEditing ? "Save Changes" : "Edit Profile"}
       </Button>
 
