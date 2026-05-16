@@ -66,7 +66,7 @@ export default function AccountPage() {
   const displayPhoto = isEditing ? draft.photo : userData.photo
 
   return (
-    <div>
+    <div className="flex h-[calc(100svh-5rem)] flex-col">
       <PageHeader title="Account" backTo="/settings" />
       <div className="space-y-2">
         {/* Photo upload */}
@@ -154,7 +154,7 @@ export default function AccountPage() {
 
       <Button
         size="lg"
-        className="mt-3 w-full"
+        className="mt-auto w-full"
         onClick={isEditing ? handleSaveChanges : handleEditProfile}
       >
         {isEditing ? "Save Changes" : "Edit Profile"}
