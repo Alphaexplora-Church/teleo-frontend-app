@@ -16,30 +16,35 @@ export default function SettingsPage() {
       icon: <User />,
       title: "Your account",
       description: "Edit your account information.",
+      color: "bg-blue-100 text-blue-500",
     },
     {
       link: "/security",
       icon: <Shield />,
       title: "Security and Account Access",
       description: "Manage your account's security.",
+      color: "bg-green-100 text-green-500",
     },
     {
       link: "/notifications",
       icon: <Bell />,
       title: "Manage Notifications",
       description: "Manage notifications recieved.",
+      color: "bg-yellow-100 text-yellow-500",
     },
     {
       link: "/report",
       icon: <AlertTriangle />,
       title: "Report an Issue",
       description: "Report users.",
+      color: "bg-red-100 text-red-500",
     },
     {
       link: "/terms",
       icon: <FileText />,
       title: "Terms and Conditions",
       description: "View the terms and conditions.",
+      color: "bg-purple-100 text-purple-500",
     },
   ]
 
@@ -53,7 +58,7 @@ export default function SettingsPage() {
             key={index}
             className="flex flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-sm"
           >
-            <div className="mr-3 shrink-0 text-gray-400 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:stroke-[1.5]">
+            <div className={`mr-3 shrink-0 rounded-full p-2 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:stroke-[1.5] ${item.color}`}>
               {item.icon}
             </div>
 
