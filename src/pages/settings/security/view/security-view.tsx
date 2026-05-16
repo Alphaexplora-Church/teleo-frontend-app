@@ -345,7 +345,7 @@ export default function SecurityView() {
       <PageHeader title="Security" backTo="/settings" />
       {securityContent.map((item) => (
         <div key={item.label}>
-          <label className="text-[14px] font-semibold">{item.label}</label>
+          <label className="text-[13px] font-semibold">{item.label}</label>
           <div className="relative mt-1">
             <Input
               type="text"
