@@ -224,7 +224,7 @@ export default function ForgotPasswordView() {
   const title = stepTitles[Math.min(vm.currentStep, stepTitles.length - 1)]
 
   return (
-    <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center">
+    <div className="flex min-h-[calc(100svh-5rem)] flex-col">
       <PageHeader title={title} backTo="/login" />
 
       <div className="py-8">
@@ -236,7 +236,7 @@ export default function ForgotPasswordView() {
         />
       </div>
 
-      <Button className="mt-6 w-full" size="lg" onClick={isSuccess ? vm.finish : vm.next}>
+      <Button className="mt-auto w-full" size="lg" onClick={isSuccess ? vm.finish : vm.next}>
         {isSuccess ? "Go to Login" : "Confirm"}
       </Button>
     </div>
