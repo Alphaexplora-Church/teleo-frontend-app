@@ -13,12 +13,12 @@ function Toggle({ enabled, onToggle }: ToggleProps) {
       role="switch"
       aria-checked={enabled}
       onClick={onToggle}
-      className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+      className={`relative inline-flex h-6 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none ${
         enabled ? "bg-green-500" : "bg-gray-300"
       }`}
     >
       <span
-        className={`pointer-events-none inline-block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ${
+        className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-md transition-transform duration-300 ${
           enabled ? "translate-x-7" : "translate-x-1"
         }`}
       />
@@ -37,8 +37,8 @@ function NotificationRow({ label, description }: NotificationRowProps) {
   return (
     <div className="flex items-center justify-between py-3">
       <div>
-        <p className="font-semibold">{label}</p>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-[13px] font-semibold">{label}</p>
+        <p className="text-[10px] text-muted-foreground">{description}</p>
       </div>
       <Toggle enabled={enabled} onToggle={() => setEnabled((prev) => !prev)} />
     </div>
