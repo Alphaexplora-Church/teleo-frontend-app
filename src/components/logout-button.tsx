@@ -41,7 +41,7 @@ export function LogoutButton() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-[calc(100%-5rem)]">
+      <DialogContent>
         <div className="flex justify-center">
           <img src={logo} className="w-[103px]" alt="Teleo Logo" />
         </div>
