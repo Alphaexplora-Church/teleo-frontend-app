@@ -10,16 +10,17 @@ export default function PageHeader({ title, backTo = -1 }: PageHeaderProps) {
   const navigate = useNavigate()
 
   return (
-    <div className="relative mb-6 flex items-center justify-center">
+    <div className="relative -mx-8 mb-6 flex flex-col items-center justify-center px-8 py-3 sm:-mx-10 sm:px-10">
       <button
         type="button"
         onClick={() => navigate(backTo as string)}
-        className="absolute left-0 flex items-center text-foreground"
+        className="absolute left-8 top-1/2 -translate-y-1/2 text-foreground sm:left-10"
         aria-label="Go back"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
-      <h1 className="text-xl font-bold">{title}</h1>
+
+      <h1 className="text-xl font-semibold">{title}</h1>
     </div>
   )
 }
