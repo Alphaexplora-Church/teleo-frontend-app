@@ -19,7 +19,7 @@ export default function PageHeader({ title, backTo = -1 }: PageHeaderProps) {
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
-      <h1 className="text-[18px] font-bold">{title}</h1>
+      <h1 className="text-xl font-bold">{title}</h1>
     </div>
   )
 }
