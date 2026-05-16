@@ -72,7 +72,7 @@ export default function AccountPage() {
         {/* Photo upload */}
         <div className="flex flex-col items-center gap-1">
           <div
-            className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-full border-2 border-input bg-muted"
+            className="relative h-24 w-24 cursor-pointer overflow-hidden rounded-full border-2 border-input bg-muted"
             onClick={() => isEditing && fileInputRef.current?.click()}
             title={isEditing ? "Change photo" : undefined}
           >
@@ -86,7 +86,7 @@ export default function AccountPage() {
               <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
+                  className="h-16 w-16"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   aria-hidden="true"
