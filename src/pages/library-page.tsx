@@ -1,4 +1,4 @@
-import { BookOpen, BookMarked, Download, Clock, ChevronRight, Home, HeartHandshake, Megaphone, CircleUser, GraduationCap, AlignLeft } from "lucide-react"
+import { BookOpen, BookMarked, Download, Clock, ChevronRight, Home, HeartHandshake, Megaphone, CircleUser, Video, SquareArrowOutUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -11,6 +11,7 @@ export type ContentItem = {
   title: string
   subtitle: string
   duration: string
+  genre: string
 }
 
 export type Section = {
@@ -25,34 +26,34 @@ const SECTIONS: Record<Tab, Section[]> = {
       title: "For Starters",
       showAll: true,
       items: [
-        { title: "Faith Foundations", subtitle: "7 chapters", duration: "6h 30min" },
-        { title: "Grace & Truth", subtitle: "5 chapters", duration: "4h 15min" },
-        { title: "Walking in Purpose", subtitle: "6 chapters", duration: "5h 00min" },
-        { title: "New Beginnings", subtitle: "4 chapters", duration: "3h 45min" },
-        { title: "The Narrow Path", subtitle: "8 chapters", duration: "7h 10min" },
+        { title: "Faith Foundations", subtitle: "7 chapters", duration: "6h 30min", genre: "Spiritual Growth" },
+        { title: "Grace & Truth", subtitle: "5 chapters", duration: "4h 15min", genre: "Theology" },
+        { title: "Walking in Purpose", subtitle: "6 chapters", duration: "5h 00min", genre: "Personal Growth" },
+        { title: "New Beginnings", subtitle: "4 chapters", duration: "3h 45min", genre: "Personal Growth" },
+        { title: "The Narrow Path", subtitle: "8 chapters", duration: "7h 10min", genre: "Discipleship" },
       ],
     },
     {
       title: "Business",
       showAll: true,
       items: [
-        { title: "Kingdom Entrepreneurship", subtitle: "Lesson", duration: "1h 20min" },
-        { title: "Stewardship & Wealth", subtitle: "Lesson", duration: "2h 05min" },
-        { title: "Leading with Integrity", subtitle: "Lesson", duration: "1h 45min" },
-        { title: "Marketplace Ministry", subtitle: "Lesson", duration: "2h 30min" },
-        { title: "Vision & Strategy", subtitle: "Lesson", duration: "1h 55min" },
-        { title: "Servant Leadership", subtitle: "Lesson", duration: "1h 10min" },
+        { title: "Kingdom Entrepreneurship", subtitle: "Lesson", duration: "1h 20min", genre: "Business" },
+        { title: "Stewardship & Wealth", subtitle: "Lesson", duration: "2h 05min", genre: "Finance" },
+        { title: "Leading with Integrity", subtitle: "Lesson", duration: "1h 45min", genre: "Leadership" },
+        { title: "Marketplace Ministry", subtitle: "Lesson", duration: "2h 30min", genre: "Business" },
+        { title: "Vision & Strategy", subtitle: "Lesson", duration: "1h 55min", genre: "Leadership" },
+        { title: "Servant Leadership", subtitle: "Lesson", duration: "1h 10min", genre: "Leadership" },
       ],
     },
     {
       title: "Reading",
       showAll: true,
       items: [
-        { title: "Psalms Deep Dive", subtitle: "Reading", duration: "3h 00min" },
-        { title: "Proverbs for Today", subtitle: "Reading", duration: "2h 20min" },
-        { title: "Letters of Paul", subtitle: "Reading", duration: "4h 10min" },
-        { title: "The Sermon on the Mount", subtitle: "Reading", duration: "1h 30min" },
-        { title: "Revelation Unpacked", subtitle: "Reading", duration: "5h 00min" },
+        { title: "Psalms Deep Dive", subtitle: "Reading", duration: "3h 00min", genre: "Scripture" },
+        { title: "Proverbs for Today", subtitle: "Reading", duration: "2h 20min", genre: "Scripture" },
+        { title: "Letters of Paul", subtitle: "Reading", duration: "4h 10min", genre: "Scripture" },
+        { title: "The Sermon on the Mount", subtitle: "Reading", duration: "1h 30min", genre: "Scripture" },
+        { title: "Revelation Unpacked", subtitle: "Reading", duration: "5h 00min", genre: "Theology" },
       ],
     },
   ],
@@ -61,22 +62,22 @@ const SECTIONS: Record<Tab, Section[]> = {
       title: "My Books",
       showAll: true,
       items: [
-        { title: "Mere Christianity", subtitle: "C.S. Lewis", duration: "8h 00min" },
-        { title: "The Purpose Driven Life", subtitle: "Rick Warren", duration: "7h 30min" },
-        { title: "Knowing God", subtitle: "J.I. Packer", duration: "9h 15min" },
-        { title: "Celebration of Discipline", subtitle: "Richard Foster", duration: "6h 45min" },
-        { title: "The Pursuit of God", subtitle: "A.W. Tozer", duration: "4h 20min" },
-        { title: "Desiring God", subtitle: "John Piper", duration: "10h 00min" },
+        { title: "Mere Christianity", subtitle: "C.S. Lewis", duration: "8h 00min", genre: "Apologetics" },
+        { title: "The Purpose Driven Life", subtitle: "Rick Warren", duration: "7h 30min", genre: "Personal Growth" },
+        { title: "Knowing God", subtitle: "J.I. Packer", duration: "9h 15min", genre: "Theology" },
+        { title: "Celebration of Discipline", subtitle: "Richard Foster", duration: "6h 45min", genre: "Spiritual Growth" },
+        { title: "The Pursuit of God", subtitle: "A.W. Tozer", duration: "4h 20min", genre: "Spiritual Growth" },
+        { title: "Desiring God", subtitle: "John Piper", duration: "10h 00min", genre: "Theology" },
       ],
     },
     {
       title: "Recently Added",
       showAll: true,
       items: [
-        { title: "Gentle & Lowly", subtitle: "Dane Ortlund", duration: "5h 30min" },
-        { title: "The Ruthless Elimination of Hurry", subtitle: "John Mark Comer", duration: "7h 00min" },
-        { title: "Liturgy of the Ordinary", subtitle: "Tish Harrison Warren", duration: "4h 00min" },
-        { title: "Every Moment Holy", subtitle: "Douglas McKelvey", duration: "3h 15min" },
+        { title: "Gentle & Lowly", subtitle: "Dane Ortlund", duration: "5h 30min", genre: "Spiritual Growth" },
+        { title: "The Ruthless Elimination of Hurry", subtitle: "John Mark Comer", duration: "7h 00min", genre: "Personal Growth" },
+        { title: "Liturgy of the Ordinary", subtitle: "Tish Harrison Warren", duration: "4h 00min", genre: "Discipleship" },
+        { title: "Every Moment Holy", subtitle: "Douglas McKelvey", duration: "3h 15min", genre: "Prayer" },
       ],
     },
   ],
@@ -85,32 +86,28 @@ const SECTIONS: Record<Tab, Section[]> = {
       title: "Downloaded",
       showAll: false,
       items: [
-        { title: "Sunday Service — Week 1", subtitle: "Lesson", duration: "1h 10min" },
-        { title: "Sunday Service — Week 2", subtitle: "Lesson", duration: "1h 05min" },
-        { title: "Sunday Service — Week 3", subtitle: "Lesson", duration: "1h 20min" },
-        { title: "Sunday Service — Week 4", subtitle: "Lesson", duration: "58min" },
-        { title: "Sunday Service — Week 5", subtitle: "Lesson", duration: "1h 15min" },
+        { title: "Sunday Service — Week 1", subtitle: "Lesson", duration: "1h 10min", genre: "Sermon" },
+        { title: "Sunday Service — Week 2", subtitle: "Lesson", duration: "1h 05min", genre: "Sermon" },
+        { title: "Sunday Service — Week 3", subtitle: "Lesson", duration: "1h 20min", genre: "Sermon" },
+        { title: "Sunday Service — Week 4", subtitle: "Lesson", duration: "58min", genre: "Sermon" },
+        { title: "Sunday Service — Week 5", subtitle: "Lesson", duration: "1h 15min", genre: "Sermon" },
       ],
     },
     {
       title: "Saved for Offline",
       showAll: true,
       items: [
-        { title: "Faith Foundations", subtitle: "7 chapters", duration: "6h 30min" },
-        { title: "Psalms Deep Dive", subtitle: "Reading", duration: "3h 00min" },
-        { title: "Kingdom Entrepreneurship", subtitle: "Lesson", duration: "1h 20min" },
-        { title: "Mere Christianity", subtitle: "C.S. Lewis", duration: "8h 00min" },
+        { title: "Faith Foundations", subtitle: "7 chapters", duration: "6h 30min", genre: "Spiritual Growth" },
+        { title: "Psalms Deep Dive", subtitle: "Reading", duration: "3h 00min", genre: "Scripture" },
+        { title: "Kingdom Entrepreneurship", subtitle: "Lesson", duration: "1h 20min", genre: "Business" },
+        { title: "Mere Christianity", subtitle: "C.S. Lewis", duration: "8h 00min", genre: "Apologetics" },
       ],
     },
   ],
 }
 
-function ContentCard({ item, onPress }: { item: ContentItem; onPress: () => void }) {
-  const sub = item.subtitle.toLowerCase()
-  const CardIcon =
-    sub === "lesson" ? GraduationCap :
-    sub === "reading" ? AlignLeft :
-    BookOpen  // chapters / fallback
+function ContentCard({ item, onPress, index }: { item: ContentItem; onPress: () => void; index: number }) {
+  const CardIcon = index % 2 === 0 ? Video : BookOpen
 
   return (
     <button
@@ -118,7 +115,7 @@ function ContentCard({ item, onPress }: { item: ContentItem; onPress: () => void
       onClick={onPress}
       className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
     >
-      <Card className="w-full gap-0 p-0 overflow-hidden">
+      <Card className="w-full gap-0 p-0 overflow-hidden rounded-none">
         {/* Thumbnail placeholder */}
         <div className="relative aspect-4/3 w-full bg-muted">
           <CardIcon
@@ -127,12 +124,18 @@ function ContentCard({ item, onPress }: { item: ContentItem; onPress: () => void
           />
         </div>
         {/* Info */}
-        <div className="p-3 pt-2">
-          <p className="text-sm font-semibold leading-tight">{item.title}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{item.subtitle}</p>
-          <div className="flex items-center gap-1 mt-1.5 text-accent text-xs font-medium">
-            <Clock className="size-3" aria-hidden />
-            <span>{item.duration}</span>
+        <div className="p-3 pt-2 flex flex-col gap-0.5 h-[120px]">
+          <p className="text-sm font-semibold leading-tight line-clamp-2">{item.title}</p>
+          <p className="text-xs text-muted-foreground truncate">{item.subtitle}</p>
+          <span className="mt-1 self-start rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent leading-tight truncate max-w-full">
+            {item.genre}
+          </span>
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex items-center gap-1 text-accent text-xs font-medium">
+              <Clock className="size-3" aria-hidden />
+              <span>{item.duration}</span>
+            </div>
+            <SquareArrowOutUpRight className="size-3.5 text-muted-foreground" aria-hidden />
           </div>
         </div>
       </Card>
@@ -168,6 +171,7 @@ function ContentSection({ section, tab }: { section: Section; tab: Tab }) {
           <div key={i} className="w-40 shrink-0 snap-start">
             <ContentCard
               item={item}
+              index={i}
               onPress={() => navigate("/course/detail")}
             />
           </div>
@@ -234,10 +238,7 @@ export default function LibraryPage() {
   return (
     <div className="flex flex-col pb-24">
       {/* Greeting */}
-      <div className="mb-5">
-        <p className="text-sm text-muted-foreground">Hello, Juan!</p>
-        <h1 className="text-2xl font-bold leading-tight">Ready to Explore?</h1>
-      </div>
+        <h1 className="text-2xl font-bold leading-tight mb-5">Ready to Explore?</h1>
 
       {/* Tab bar */}
       <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-4 px-4">

@@ -7,6 +7,7 @@ import {
   Calendar,
   Paperclip,
   BookOpen,
+  Video,
   Home,
   HeartHandshake,
   Megaphone,
@@ -32,6 +33,7 @@ type Chapter = {
   title: string
   duration: string
   completed: boolean
+  type: "book" | "video"
 }
 
 type Attachment = {
@@ -68,10 +70,10 @@ const MOCK_COURSE: CourseDetail = {
     "In this course, we explore what the Bible says about true friendship, how to build lasting relationships, and how to be a friend who reflects Christ's love. Whether you're seeking to strengthen your friendships or understand their role in your faith journey, this course will provide biblical wisdom and practical insights.",
   tags: ["Personal growth", "Culture & society", "Art", "Theology"],
   chapters: [
-    { number: 1, title: "Designed for Connection", duration: "05:22", completed: true },
-    { number: 2, title: "Qualities of a Godly Friend", duration: "05:22", completed: false },
-    { number: 3, title: "Navigating Conflict with Grace", duration: "05:22", completed: false },
-    { number: 4, title: "Friendship & Faith", duration: "05:22", completed: false },
+    { number: 1, title: "Designed for Connection", duration: "05:22", completed: true, type: "video" },
+    { number: 2, title: "Qualities of a Godly Friend", duration: "05:22", completed: false, type: "book" },
+    { number: 3, title: "Navigating Conflict with Grace", duration: "05:22", completed: false, type: "video" },
+    { number: 4, title: "Friendship & Faith", duration: "05:22", completed: false, type: "book" },
   ],
   attachments: [
     { id: "1", name: "Friendship Workshop Photo.jpg", size: "3.3 MB", type: "image" },
@@ -248,20 +250,30 @@ function ChapterRow({
 
       {/* Title + duration */}
       <div className="flex-1 min-w-0">
-        <p className={cn("text-sm font-medium leading-tight", chapter.completed && "line-through text-muted-foreground")}>
+        <p className={cn("text-sm font-medium leading-tight transition-colors", chapter.completed ? "text-muted-foreground" : "text-foreground")}>
           {chapter.title}
         </p>
         <p className="text-xs text-muted-foreground mt-0.5">{chapter.duration}</p>
       </div>
 
-      {/* Book icon */}
-      <BookOpen
-        className={cn(
-          "size-4 shrink-0 transition-colors",
-          chapter.completed ? "text-accent" : "text-muted-foreground"
-        )}
-        aria-hidden
-      />
+      {/* Book / Video icon */}
+      {chapter.type === "video" ? (
+        <Video
+          className={cn(
+            "size-4 shrink-0 transition-colors",
+            chapter.completed ? "text-accent" : "text-muted-foreground"
+          )}
+          aria-hidden
+        />
+      ) : (
+        <BookOpen
+          className={cn(
+            "size-4 shrink-0 transition-colors",
+            chapter.completed ? "text-accent" : "text-muted-foreground"
+          )}
+          aria-hidden
+        />
+      )}
     </button>
   )
 }
@@ -478,7 +490,7 @@ export default function CourseDetailPage() {
       {/* ── More to explore ── */}
       <div className="mt-8">
         <h2 className="text-base font-bold mb-3">More to explore on this topic</h2>
-        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {course.relatedTopics.map((topic) => (
             <RelatedCard key={topic} label={topic} />
           ))}
