@@ -6,7 +6,6 @@ import {
   User,
   Calendar,
   Paperclip,
-  BookOpen,
   Video,
   Home,
   HeartHandshake,
@@ -33,7 +32,8 @@ type Chapter = {
   title: string
   duration: string
   completed: boolean
-  type: "book" | "video"
+  type: "file" | "video"
+  downloaded?: boolean
 }
 
 type Attachment = {
@@ -47,9 +47,9 @@ type CourseDetail = {
   title: string
   author: string
   date: string
-  progress: number        // 0–100
+  progress: number // 0–100
   totalChapters: number
-  currentChapter: number  // 1-based, 0 = not started
+  currentChapter: number // 1-based, 0 = not started
   about: string
   tags: string[]
   chapters: Chapter[]
@@ -64,20 +64,116 @@ const MOCK_COURSE: CourseDetail = {
   author: "Juan Dela Cruz • Youth Ministry Team",
   date: "April 23, 2024",
   progress: 25,
-  totalChapters: 4,
+  totalChapters: 12,
   currentChapter: 1,
   about:
     "In this course, we explore what the Bible says about true friendship, how to build lasting relationships, and how to be a friend who reflects Christ's love. Whether you're seeking to strengthen your friendships or understand their role in your faith journey, this course will provide biblical wisdom and practical insights.",
   tags: ["Personal growth", "Culture & society", "Art", "Theology"],
   chapters: [
-    { number: 1, title: "Designed for Connection", duration: "05:22", completed: true, type: "video" },
-    { number: 2, title: "Qualities of a Godly Friend", duration: "05:22", completed: false, type: "book" },
-    { number: 3, title: "Navigating Conflict with Grace", duration: "05:22", completed: false, type: "video" },
-    { number: 4, title: "Friendship & Faith", duration: "05:22", completed: false, type: "book" },
+    {
+      number: 1,
+      title: "Designed for Connection",
+      duration: "05:22",
+      completed: true,
+      type: "video",
+    },
+    {
+      number: 2,
+      title: "Qualities of a Godly Friend",
+      duration: "05:22",
+      completed: false,
+      type: "file",
+      downloaded: true,
+    },
+    {
+      number: 3,
+      title: "Navigating Conflict with Grace",
+      duration: "05:22",
+      completed: false,
+      type: "video",
+    },
+    {
+      number: 4,
+      title: "Friendship & Faith",
+      duration: "05:22",
+      completed: false,
+      type: "file",
+      downloaded: false,
+    },
+    {
+      number: 5,
+      title: "Building Trust",
+      duration: "06:15",
+      completed: false,
+      type: "video",
+    },
+    {
+      number: 6,
+      title: "Communication Skills",
+      duration: "07:45",
+      completed: false,
+      type: "file",
+      downloaded: false,
+    },
+    {
+      number: 7,
+      title: "Handling Misunderstandings",
+      duration: "05:58",
+      completed: false,
+      type: "video",
+    },
+    {
+      number: 8,
+      title: "Long-Distance Friendships",
+      duration: "06:30",
+      completed: false,
+      type: "file",
+      downloaded: false,
+    },
+    {
+      number: 9,
+      title: "Group Dynamics",
+      duration: "05:40",
+      completed: false,
+      type: "video",
+    },
+    {
+      number: 10,
+      title: "Seasonal Friendships",
+      duration: "06:00",
+      completed: false,
+      type: "file",
+      downloaded: false,
+    },
+    {
+      number: 11,
+      title: "Mentorship Relationships",
+      duration: "07:12",
+      completed: false,
+      type: "video",
+    },
+    {
+      number: 12,
+      title: "Reconciliation Guide",
+      duration: "08:30",
+      completed: false,
+      type: "file",
+      downloaded: false,
+    },
   ],
   attachments: [
-    { id: "1", name: "Friendship Workshop Photo.jpg", size: "3.3 MB", type: "image" },
-    { id: "2", name: "Friendship Study Guide.pdf", size: "2.4 MB", type: "pdf" },
+    {
+      id: "1",
+      name: "Friendship Workshop Photo.jpg",
+      size: "3.3 MB",
+      type: "image",
+    },
+    {
+      id: "2",
+      name: "Friendship Study Guide.pdf",
+      size: "2.4 MB",
+      type: "pdf",
+    },
   ],
   relatedTopics: ["Church History", "Finding Peace", "Healthy You", "Healthy"],
 }
@@ -98,7 +194,7 @@ function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-background border-t border-border px-2 py-3"
+      className="fixed right-0 bottom-0 left-0 z-50 flex items-center justify-around border-t border-border bg-background px-2 py-3"
       aria-label="Main navigation"
     >
       {BOTTOM_NAV.map(({ icon: Icon, label, href }) => {
@@ -114,7 +210,7 @@ function BottomNav() {
           >
             <span
               className={cn(
-                "flex items-center justify-center size-11 rounded-full transition-colors",
+                "flex size-11 items-center justify-center rounded-full transition-colors",
                 isActive
                   ? "bg-accent text-white"
                   : "text-muted-foreground hover:text-foreground"
@@ -132,9 +228,13 @@ function BottomNav() {
 // ── Attachment helpers ────────────────────────────────────────────────────────
 
 function AttachmentIcon({ type }: { type: Attachment["type"] }) {
-  if (type === "pdf") return <FileText className="size-5 text-destructive shrink-0" aria-hidden />
-  if (type === "image") return <Image className="size-5 text-accent shrink-0" aria-hidden />
-  return <Paperclip className="size-5 text-muted-foreground shrink-0" aria-hidden />
+  if (type === "pdf")
+    return <FileText className="size-5 shrink-0 text-destructive" aria-hidden />
+  if (type === "image")
+    return <Image className="size-5 shrink-0 text-accent" aria-hidden />
+  return (
+    <Paperclip className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+  )
 }
 
 // ── Attachments list dialog ───────────────────────────────────────────────────
@@ -152,21 +252,27 @@ function AttachmentsDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton className="w-[calc(100%-2rem)] max-w-sm p-4 gap-3">
+      <DialogContent
+        showCloseButton
+        className="w-[calc(100%-2rem)] max-w-sm gap-3 p-4"
+      >
         <div className="flex flex-col gap-2">
           {attachments.map((a) => (
             <button
               key={a.id}
               type="button"
               onClick={() => onSelect(a)}
-              className="flex items-center gap-3 rounded-lg border border-border p-3 text-left hover:bg-muted transition-colors"
+              className="flex items-center gap-3 rounded-lg border border-border p-3 text-left transition-colors hover:bg-muted"
             >
               <AttachmentIcon type={a.type} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{a.name}</p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium">{a.name}</p>
                 <p className="text-xs text-muted-foreground">{a.size}</p>
               </div>
-              <Download className="size-4 text-muted-foreground shrink-0" aria-hidden />
+              <Download
+                className="size-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
             </button>
           ))}
         </div>
@@ -186,26 +292,39 @@ function AttachmentPreviewDialog({
 }) {
   return (
     <Dialog open={!!attachment} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent showCloseButton={false} className="w-[calc(100%-2rem)] max-w-sm p-4 gap-3">
+      <DialogContent
+        showCloseButton={false}
+        className="w-[calc(100%-2rem)] max-w-sm gap-3 p-4"
+      >
         {attachment && (
           <>
             {/* File header */}
             <div className="flex items-center gap-3">
               <AttachmentIcon type={attachment.type} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{attachment.name}</p>
-                <p className="text-xs text-muted-foreground">{attachment.size}</p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium">
+                  {attachment.name}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {attachment.size}
+                </p>
               </div>
               <button type="button" aria-label="Download">
-                <Download className="size-4 text-muted-foreground" aria-hidden />
+                <Download
+                  className="size-4 text-muted-foreground"
+                  aria-hidden
+                />
               </button>
             </div>
 
             {/* Preview area */}
-            <div className="w-full aspect-3/4 rounded-lg bg-muted" aria-label="File preview" />
+            <div
+              className="aspect-3/4 w-full rounded-lg bg-muted"
+              aria-label="File preview"
+            />
 
             {/* Close */}
-            <DialogFooter className="border-0 bg-transparent p-0 mx-0 mb-0">
+            <DialogFooter className="mx-0 mb-0 border-0 bg-transparent p-0">
               <DialogClose asChild>
                 <Button variant="outline" className="w-full rounded-lg">
                   Close
@@ -219,8 +338,6 @@ function AttachmentPreviewDialog({
   )
 }
 
-
-
 function ChapterRow({
   chapter,
   onToggle,
@@ -232,7 +349,7 @@ function ChapterRow({
     <button
       type="button"
       onClick={() => onToggle(chapter.number)}
-      className="w-full flex items-center gap-3 py-3 border-b border-border last:border-0 text-left transition-colors hover:bg-muted/40 rounded-lg px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="flex w-full items-center gap-3 rounded-lg border-b border-border px-1 py-3 text-left transition-colors last:border-0 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       aria-pressed={chapter.completed}
       aria-label={`${chapter.title} – ${chapter.completed ? "completed, click to mark incomplete" : "click to mark complete"}`}
     >
@@ -249,16 +366,23 @@ function ChapterRow({
       </span>
 
       {/* Title + duration */}
-      <div className="flex-1 min-w-0">
-        <p className={cn("text-sm font-medium leading-tight transition-colors", chapter.completed ? "text-muted-foreground" : "text-foreground")}>
+      <div className="min-w-0 flex-1">
+        <p
+          className={cn(
+            "text-sm leading-tight font-medium transition-colors",
+            chapter.completed ? "text-muted-foreground" : "text-foreground"
+          )}
+        >
           {chapter.title}
         </p>
-        <p className="text-xs text-muted-foreground mt-0.5">{chapter.duration}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          {chapter.duration}
+        </p>
       </div>
 
-      {/* Book / Video icon */}
-      {chapter.type === "video" ? (
-        <Video
+      {/* Type icon (file or video) */}
+      {chapter.type === "file" ? (
+        <FileText
           className={cn(
             "size-4 shrink-0 transition-colors",
             chapter.completed ? "text-accent" : "text-muted-foreground"
@@ -266,7 +390,7 @@ function ChapterRow({
           aria-hidden
         />
       ) : (
-        <BookOpen
+        <Video
           className={cn(
             "size-4 shrink-0 transition-colors",
             chapter.completed ? "text-accent" : "text-muted-foreground"
@@ -280,9 +404,9 @@ function ChapterRow({
 
 function RelatedCard({ label }: { label: string }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 w-20 shrink-0">
-      <div className="w-full aspect-square rounded-xl bg-muted" />
-      <span className="text-xs text-center leading-tight text-muted-foreground line-clamp-2">
+    <div className="flex w-20 shrink-0 flex-col items-center gap-1.5">
+      <div className="aspect-square w-full rounded-xl bg-muted" />
+      <span className="line-clamp-2 text-center text-xs leading-tight text-muted-foreground">
         {label}
       </span>
     </div>
@@ -293,18 +417,24 @@ function RelatedCard({ label }: { label: string }) {
 
 export default function CourseDetailPage() {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<"chapters" | "description">("chapters")
+  const [activeTab, setActiveTab] = useState<"chapters" | "description">(
+    "chapters"
+  )
   const [attachmentsOpen, setAttachmentsOpen] = useState(false)
-  const [selectedAttachment, setSelectedAttachment] = useState<Attachment | null>(null)
+  const [selectedAttachment, setSelectedAttachment] =
+    useState<Attachment | null>(null)
+  const [chapterFilter, setChapterFilter] = useState<
+    "all" | "file" | "video" | "downloaded"
+  >("all")
+  const [isChaptersExpanded, setIsChaptersExpanded] = useState(false)
 
   // Local mutable chapter state so toggling completion works without a backend
   const [bookmarked, setBookmarked] = useState(false)
-  const [downloaded, setDownloaded] = useState(false)
   const [chapters, setChapters] = useState<Chapter[]>(MOCK_COURSE.chapters)
 
   const completedCount = chapters.filter((c) => c.completed).length
   const progress = Math.round((completedCount / chapters.length) * 100)
-  const currentChapter = completedCount  // last completed chapter index (0 = none)
+  const currentChapter = completedCount // last completed chapter index (0 = none)
 
   const course = {
     ...MOCK_COURSE,
@@ -322,17 +452,37 @@ export default function CourseDetailPage() {
     )
   }
 
+  function getFilteredChapters() {
+    switch (chapterFilter) {
+      case "file":
+        return chapters.filter((ch) => ch.type === "file")
+      case "video":
+        return chapters.filter((ch) => ch.type === "video")
+      case "downloaded":
+        return chapters.filter((ch) => ch.downloaded)
+      case "all":
+      default:
+        return chapters
+    }
+  }
+
+  function getDisplayedChapters() {
+    const filtered = getFilteredChapters()
+    if (!isChaptersExpanded && filtered.length > 10) {
+      return filtered.slice(0, 10)
+    }
+    return filtered
+  }
+
   const progressLabel =
-    currentChapter > 0
-      ? `${currentChapter}/${course.totalChapters}`
-      : undefined
+    currentChapter > 0 ? `${currentChapter}/${course.totalChapters}` : undefined
 
   return (
     <div className="flex flex-col pb-12">
       {/* ── Hero area ── */}
       <div className="relative -mx-8 sm:-mx-10">
         {/* Thumbnail placeholder */}
-        <div className="w-full aspect-video bg-muted" />
+        <div className="aspect-video w-full bg-muted" />
 
         {/* Back button */}
         <button
@@ -353,7 +503,10 @@ export default function CourseDetailPage() {
           className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow"
         >
           <Bookmark
-            className={cn("size-4 transition-colors", bookmarked && "fill-primary-foreground")}
+            className={cn(
+              "size-4 transition-colors",
+              bookmarked && "fill-primary-foreground"
+            )}
             aria-hidden
           />
         </button>
@@ -361,13 +514,15 @@ export default function CourseDetailPage() {
 
       {/* ── Progress bar ── */}
       <div className="mt-4">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-muted-foreground">Course Progress</span>
+        <div className="mb-1 flex items-center justify-between">
+          <span>Course Progress</span>
           {progressLabel && (
-            <span className="text-xs text-muted-foreground">{progressLabel}</span>
+            <span className="text-xs text-muted-foreground">
+              {progressLabel}
+            </span>
           )}
         </div>
-        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-accent transition-all"
             style={{ width: `${course.progress}%` }}
@@ -381,39 +536,47 @@ export default function CourseDetailPage() {
 
       {/* ── Title block ── */}
       <div className="mt-4">
-        <h1 className="text-2xl font-bold leading-tight">{course.title}</h1>
-        <div className="flex items-center gap-1.5 mt-1.5 text-xs text-muted-foreground">
+        <h1 className="text-2xl leading-tight font-bold">{course.title}</h1>
+        {/* Tags */}
+        <div className="mt-1 flex flex-wrap gap-2">
+          {course.tags.map((tag, index) => (
+            <span key={tag} className="flex items-center gap-2">
+              <span className="text-xs text-foreground">{tag}</span>
+              {index < course.tags.length - 1 && (
+                <span className="text-xs text-foreground">•</span>
+              )}
+            </span>
+          ))}
+        </div>
+        <div className="mt-1.5 flex items-center gap-1.5 text-xs">
           <User className="size-3.5 shrink-0" aria-hidden />
           <span>{course.author}</span>
         </div>
-        <div className="flex items-center gap-1.5 mt-1 text-xs text-muted-foreground">
+        <div className="mt-1 flex items-center gap-1.5 text-xs">
           <Calendar className="size-3.5 shrink-0" aria-hidden />
           <span>{course.date}</span>
         </div>
-      </div>
 
-      {/* ── View attachments + Download ── */}
-      <div className="mt-4 flex gap-2">
-        <Button
-          onClick={() => setAttachmentsOpen(true)}
-          className="flex-1 rounded-full bg-accent hover:bg-accent/90 text-white gap-2"
-        >
-          <Paperclip className="size-4" aria-hidden />
-          View attachments
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label={downloaded ? "Remove download" : "Download course"}
-          aria-pressed={downloaded}
-          onClick={() => setDownloaded((prev) => !prev)}
-          className="rounded-full shrink-0"
-        >
-          <Download
-            className={cn("size-4 transition-colors", downloaded && "text-accent")}
-            aria-hidden
-          />
-        </Button>
+        {/* Offered in section */}
+        <div className="mt-2 flex items-center gap-2">
+          <span className="text-xs font-medium text-muted-foreground">
+            Offered in:
+          </span>
+          <div className="flex items-center gap-1.5">
+            {course.chapters.some((ch) => ch.type === "video") && (
+              <Video
+                className="size-3.5 text-muted-foreground"
+                aria-label="Video content"
+              />
+            )}
+            {course.chapters.some((ch) => ch.type === "file") && (
+              <FileText
+                className="size-3.5 text-muted-foreground"
+                aria-label="File attachments"
+              />
+            )}
+          </div>
+        </div>
       </div>
 
       {/* ── Attachments dialogs ── */}
@@ -431,26 +594,17 @@ export default function CourseDetailPage() {
         onClose={() => setSelectedAttachment(null)}
       />
 
-      {/* ── About ── */}
-      <div className="mt-6">
-        <h2 className="text-base font-bold mb-2">About this course</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">{course.about}</p>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-3">
-          {course.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-border px-3 py-1 text-xs text-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+      {/* ── Course description ── */}
+      <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
+        <p className="text-sm leading-relaxed text-foreground">
+          In this course, we explore what the Bible says about true friendship,
+          how to build lasting relationships, and how to be a friend who
+          reflects Christ's love.
+        </p>
       </div>
 
       {/* ── Tabs ── */}
-      <div className="mt-6 border-b border-border flex">
+      <div className="mt-6 flex border-b border-border">
         {(["chapters", "description"] as const).map((tab) => (
           <button
             key={tab}
@@ -471,26 +625,62 @@ export default function CourseDetailPage() {
       {/* ── Tab content ── */}
       {activeTab === "chapters" ? (
         <div className="mt-2">
-          {course.chapters.map((ch) => (
+          {/* Chapter Filters */}
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {(["all", "file", "video", "downloaded"] as const).map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setChapterFilter(filter)}
+                className={cn(
+                  "rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
+                  chapterFilter === filter
+                    ? "bg-accent text-white"
+                    : "border border-border bg-background text-foreground hover:bg-muted"
+                )}
+              >
+                {filter.charAt(0).toUpperCase() + filter.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {/* Chapters List */}
+          {getDisplayedChapters().map((ch) => (
             <ChapterRow key={ch.number} chapter={ch} onToggle={toggleChapter} />
           ))}
+
+          {/* Expand/Collapse button */}
+          {getFilteredChapters().length > 10 && (
+            <button
+              type="button"
+              onClick={() => setIsChaptersExpanded((prev) => !prev)}
+              className="mt-3 w-full rounded-lg border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              {isChaptersExpanded
+                ? `Show less (${getFilteredChapters().length - 10} hidden)`
+                : `Expand all (${getFilteredChapters().length - 10} more)`}
+            </button>
+          )}
         </div>
       ) : (
         <div className="mt-4">
-          <h3 className="text-base font-bold mb-2">
+          <h3 className="mb-2 text-base font-bold">
             Chapter {course.currentChapter || 1}
           </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            What does the Bible say about being a true friend? Learn the key traits of
-            Christ-centered friendships, including love, honesty, and loyalty.
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            What does the Bible say about being a true friend? Learn the key
+            traits of Christ-centered friendships, including love, honesty, and
+            loyalty.
           </p>
         </div>
       )}
 
       {/* ── More to explore ── */}
       <div className="mt-8">
-        <h2 className="text-base font-bold mb-3">More to explore on this topic</h2>
-        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <h2 className="mb-3 text-base font-bold">
+          More to explore on this topic
+        </h2>
+        <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {course.relatedTopics.map((topic) => (
             <RelatedCard key={topic} label={topic} />
           ))}
