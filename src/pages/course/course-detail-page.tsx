@@ -15,6 +15,7 @@ import {
   Download,
   FileText,
   Image,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -83,7 +84,7 @@ const MOCK_COURSE: CourseDetail = {
       duration: "05:22",
       completed: false,
       type: "file",
-      downloaded: true,
+      downloaded: false,
     },
     {
       number: 3,
@@ -338,20 +339,32 @@ function AttachmentPreviewDialog({
   )
 }
 
+// ── Helper to get chapter type label ────────────────────────────────────────
+function getChapterTypeLabel(chapter: Chapter): string {
+  return chapter.type === "file" ? "PDF File" : "Video"
+}
+
 function ChapterRow({
   chapter,
   onToggle,
+  onDownload,
 }: {
   chapter: Chapter
   onToggle: (number: number) => void
+  onDownload?: (number: number) => void
 }) {
+  const handleDownloadClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onDownload?.(chapter.number)
+  }
+
   return (
     <button
       type="button"
       onClick={() => onToggle(chapter.number)}
       className="flex w-full items-center gap-3 rounded-lg border-b border-border px-1 py-3 text-left transition-colors last:border-0 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       aria-pressed={chapter.completed}
-      aria-label={`${chapter.title} – ${chapter.completed ? "completed, click to mark incomplete" : "click to mark complete"}`}
+      aria-label={`${chapter.title} – ${getChapterTypeLabel(chapter)} – ${chapter.completed ? "completed, click to mark incomplete" : "click to mark complete"}`}
     >
       {/* Number badge */}
       <span
@@ -365,7 +378,7 @@ function ChapterRow({
         {chapter.number}
       </span>
 
-      {/* Title + duration */}
+      {/* Title + Type + Duration */}
       <div className="min-w-0 flex-1">
         <p
           className={cn(
@@ -375,29 +388,41 @@ function ChapterRow({
         >
           {chapter.title}
         </p>
-        <p className="mt-0.5 text-xs text-muted-foreground">
-          {chapter.duration}
-        </p>
+        <div className="mt-1 flex items-center gap-2">
+          <p className="text-xs font-medium text-foreground">
+            {getChapterTypeLabel(chapter)}
+          </p>
+          {chapter.type === "video" && (
+            <>
+              <span className="text-xs text-muted-foreground">•</span>
+              <p className="text-xs text-muted-foreground">
+                {chapter.duration}
+              </p>
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Type icon (file or video) */}
-      {chapter.type === "file" ? (
-        <FileText
-          className={cn(
-            "size-4 shrink-0 transition-colors",
-            chapter.completed ? "text-accent" : "text-muted-foreground"
-          )}
-          aria-hidden
-        />
-      ) : (
-        <Video
-          className={cn(
-            "size-4 shrink-0 transition-colors",
-            chapter.completed ? "text-accent" : "text-muted-foreground"
-          )}
-          aria-hidden
-        />
-      )}
+      {/* Download button for all chapters */}
+      <button
+        type="button"
+        onClick={handleDownloadClick}
+        aria-label={
+          chapter.downloaded
+            ? `${chapter.title} is downloaded`
+            : `Download ${chapter.title}`
+        }
+        className="flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-accent/10 active:bg-accent/20"
+      >
+        {chapter.downloaded ? (
+          <Check className="size-5 shrink-0 text-accent" aria-hidden />
+        ) : (
+          <Download
+            className="size-5 shrink-0 text-muted-foreground"
+            aria-hidden
+          />
+        )}
+      </button>
     </button>
   )
 }
@@ -450,6 +475,16 @@ export default function CourseDetailPage() {
         ch.number === number ? { ...ch, completed: !ch.completed } : ch
       )
     )
+  }
+
+  function handleDownloadChapter(number: number) {
+    setChapters((prev) =>
+      prev.map((ch) =>
+        ch.number === number ? { ...ch, downloaded: !ch.downloaded } : ch
+      )
+    )
+    // In a real app, this would trigger an actual download
+    console.log(`Downloading chapter ${number}...`)
   }
 
   function getFilteredChapters() {
@@ -646,7 +681,12 @@ export default function CourseDetailPage() {
 
           {/* Chapters List */}
           {getDisplayedChapters().map((ch) => (
-            <ChapterRow key={ch.number} chapter={ch} onToggle={toggleChapter} />
+            <ChapterRow
+              key={ch.number}
+              chapter={ch}
+              onToggle={toggleChapter}
+              onDownload={handleDownloadChapter}
+            />
           ))}
 
           {/* Expand/Collapse button */}
