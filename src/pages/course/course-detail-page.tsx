@@ -1,5 +1,4 @@
-﻿import { useState } from "react"
-import { useNavigate } from "react-router"
+﻿import { useCourseDetailViewModel } from "./viewmodel/use-course-detail-view-model"
 import {
   ArrowLeft,
   Bookmark,
@@ -17,80 +16,14 @@ import {
   ChapterRow,
   RelatedCard,
 } from "./course-detail-components"
-import { MOCK_COURSE } from "./course-detail-data"
-import type { Attachment, Chapter, CourseDetail } from "./course-detail-data"
 
 export default function CourseDetailPage() {
-  const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<"chapters" | "description">(
-    "chapters"
-  )
-  const [attachmentsOpen, setAttachmentsOpen] = useState(false)
-  const [selectedAttachment, setSelectedAttachment] =
-    useState<Attachment | null>(null)
-  const [chapterFilter, setChapterFilter] = useState<
-    "all" | "file" | "video" | "downloaded"
-  >("all")
-  const [isChaptersExpanded, setIsChaptersExpanded] = useState(false)
-  const [showFullAbout, setShowFullAbout] = useState(false)
-
-  const [bookmarked, setBookmarked] = useState(false)
-  const [chapters, setChapters] = useState<Chapter[]>(MOCK_COURSE.chapters)
-
-  const completedCount = chapters.filter((c) => c.completed).length
-  const progress = Math.round((completedCount / chapters.length) * 100)
-  const currentChapter = completedCount
-
-  const course: CourseDetail = {
-    ...MOCK_COURSE,
-    chapters,
-    progress,
-    currentChapter,
-    totalChapters: chapters.length,
-  }
-
-  function toggleChapter(number: number) {
-    setChapters((prev) =>
-      prev.map((ch) =>
-        ch.number === number ? { ...ch, completed: !ch.completed } : ch
-      )
-    )
-  }
-
-  function handleDownloadChapter(number: number) {
-    setChapters((prev) =>
-      prev.map((ch) =>
-        ch.number === number ? { ...ch, downloaded: !ch.downloaded } : ch
-      )
-    )
-    // In a real app, this would trigger an actual download
-    console.log(`Downloading chapter ${number}...`)
-  }
-
-  function getFilteredChapters() {
-    switch (chapterFilter) {
-      case "file":
-        return chapters.filter((ch) => ch.type === "file")
-      case "video":
-        return chapters.filter((ch) => ch.type === "video")
-      case "downloaded":
-        return chapters.filter((ch) => ch.downloaded)
-      case "all":
-      default:
-        return chapters
-    }
-  }
-
-  function getDisplayedChapters() {
-    const filtered = getFilteredChapters()
-    if (!isChaptersExpanded && filtered.length > 10) {
-      return filtered.slice(0, 10)
-    }
-    return filtered
-  }
-
+  const vm = useCourseDetailViewModel()
+  const course = vm.course
   const progressLabel =
-    currentChapter > 0 ? `${currentChapter}/${course.totalChapters}` : undefined
+    vm.currentChapter > 0
+      ? `${vm.currentChapter}/${course.totalChapters}`
+      : undefined
 
   return (
     <div className="flex flex-col pb-12">
@@ -99,7 +32,7 @@ export default function CourseDetailPage() {
 
         <button
           type="button"
-          onClick={() => navigate(-1)}
+          onClick={vm.goBack}
           aria-label="Go back"
           className="absolute top-4 left-4 flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow"
         >
@@ -108,15 +41,15 @@ export default function CourseDetailPage() {
 
         <button
           type="button"
-          aria-label={bookmarked ? "Remove bookmark" : "Bookmark"}
-          aria-pressed={bookmarked}
-          onClick={() => setBookmarked((prev) => !prev)}
+          aria-label={vm.bookmarked ? "Remove bookmark" : "Bookmark"}
+          aria-pressed={vm.bookmarked}
+          onClick={vm.toggleBookmark}
           className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow"
         >
           <Bookmark
             className={cn(
               "size-4 transition-colors",
-              bookmarked && "fill-primary-foreground"
+              vm.bookmarked && "fill-primary-foreground"
             )}
             aria-hidden
           />
@@ -188,30 +121,30 @@ export default function CourseDetailPage() {
       </div>
 
       <AttachmentsDialog
-        open={attachmentsOpen}
-        onOpenChange={setAttachmentsOpen}
+        open={vm.attachmentsOpen}
+        onOpenChange={vm.setAttachmentsOpen}
         attachments={course.attachments}
-        onSelect={(a) => {
-          setAttachmentsOpen(false)
-          setSelectedAttachment(a)
+        onSelect={(attachment) => {
+          vm.setAttachmentsOpen(false)
+          vm.selectAttachment(attachment)
         }}
       />
       <AttachmentPreviewDialog
-        attachment={selectedAttachment}
-        onClose={() => setSelectedAttachment(null)}
+        attachment={vm.selectedAttachment}
+        onClose={() => vm.selectAttachment(null)}
       />
 
       <div className="mt-6">
         <p className="text-sm leading-relaxed text-foreground">
-          {showFullAbout ? course.about : `${course.about.slice(0, 30)}...`}
+          {vm.showFullAbout ? course.about : `${course.about.slice(0, 30)}...`}
         </p>
         {course.about.length > 30 && (
           <button
             type="button"
-            onClick={() => setShowFullAbout((prev) => !prev)}
+            onClick={vm.toggleFullAbout}
             className="mt-2 text-sm font-medium text-accent"
           >
-            {showFullAbout ? "Read less" : "Read more..."}
+            {vm.showFullAbout ? "Read less" : "Read more..."}
           </button>
         )}
       </div>
@@ -221,10 +154,10 @@ export default function CourseDetailPage() {
           <button
             key={tab}
             type="button"
-            onClick={() => setActiveTab(tab)}
+            onClick={() => vm.setActiveTab(tab)}
             className={cn(
               "flex-1 pb-2 text-sm font-medium capitalize transition-colors",
-              activeTab === tab
+              vm.activeTab === tab
                 ? "border-b-2 border-foreground text-foreground"
                 : "text-muted-foreground"
             )}
@@ -234,17 +167,17 @@ export default function CourseDetailPage() {
         ))}
       </div>
 
-      {activeTab === "chapters" ? (
+      {vm.activeTab === "chapters" ? (
         <div className="mt-2">
           <div className="mb-4 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {(["all", "file", "video", "downloaded"] as const).map((filter) => (
               <button
                 key={filter}
                 type="button"
-                onClick={() => setChapterFilter(filter)}
+                onClick={() => vm.setChapterFilter(filter)}
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
-                  chapterFilter === filter
+                  vm.chapterFilter === filter
                     ? "bg-accent text-white"
                     : "border border-border bg-background text-foreground hover:bg-muted"
                 )}
@@ -254,24 +187,24 @@ export default function CourseDetailPage() {
             ))}
           </div>
 
-          {getDisplayedChapters().map((ch) => (
+          {vm.displayedChapters.map((chapter) => (
             <ChapterRow
-              key={ch.number}
-              chapter={ch}
-              onToggle={toggleChapter}
-              onDownload={handleDownloadChapter}
+              key={chapter.number}
+              chapter={chapter}
+              onToggle={vm.toggleChapter}
+              onDownload={vm.handleDownloadChapter}
             />
           ))}
 
-          {getFilteredChapters().length > 10 && (
+          {vm.filteredChapters.length > 10 && (
             <button
               type="button"
-              onClick={() => setIsChaptersExpanded((prev) => !prev)}
+              onClick={() => vm.setIsChaptersExpanded((prev) => !prev)}
               className="mt-3 w-full rounded-lg border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
             >
-              {isChaptersExpanded
-                ? `Show less (${getFilteredChapters().length - 10} hidden)`
-                : `Expand all (${getFilteredChapters().length - 10} more)`}
+              {vm.isChaptersExpanded
+                ? `Show less (${vm.filteredChapters.length - 10} hidden)`
+                : `Expand all (${vm.filteredChapters.length - 10} more)`}
             </button>
           )}
         </div>
