@@ -1,4 +1,5 @@
 import {
+  ArrowUpDown,
   BookOpen,
   BookMarked,
   Download,
@@ -16,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { useState } from "react"
 import { useNavigate, useLocation } from "react-router"
 
-export type Tab = "library" | "bookshelf" | "downloads"
+export type Tab = "library" | "bookshelf" | "downloads" | "history"
 export type EventItem = {
   title: string
   date: string
@@ -29,19 +30,22 @@ const UPCOMING_EVENTS: EventItem[] = [
     title: "Sunday Book Club",
     date: "Jun 1 · 4:00 PM",
     location: "Community Hall",
-    description: "Join us for a guided reading and fellowship on transformative stories.",
+    description:
+      "Join us for a guided reading and fellowship on transformative stories.",
   },
   {
     title: "Live Workshop",
     date: "Jun 8 · 6:30 PM",
     location: "Online Webinar",
-    description: "An interactive session on unlocking your next chapter through faith-led habits.",
+    description:
+      "An interactive session on unlocking your next chapter through faith-led habits.",
   },
   {
     title: "Author Spotlight",
     date: "Jun 15 · 7:00 PM",
     location: "Main Library",
-    description: "Meet the authors behind the most inspirational books in your collection.",
+    description:
+      "Meet the authors behind the most inspirational books in your collection.",
   },
 ]
 
@@ -49,6 +53,14 @@ export type ContentItem = {
   title: string
   subtitle: string
   duration: string
+}
+
+export type HistoryItem = {
+  number: number
+  title: string
+  subtitle: string
+  duration: string
+  type: "video" | "file"
 }
 
 export type Section = {
@@ -281,16 +293,137 @@ const SECTIONS: Record<Tab, Section[]> = {
       ],
     },
   ],
+  history: [],
+}
+
+const HISTORY_TABS = [
+  { id: "main", label: "Main" },
+  { id: "video", label: "Video" },
+  { id: "file", label: "Files" },
+] as const
+
+type HistoryTab = (typeof HISTORY_TABS)[number]["id"]
+
+const HISTORY_ITEMS: HistoryItem[] = [
+  {
+    number: 1,
+    title: "Inferno",
+    subtitle: "A violent heist at a Vatican City museum sparks chaos.",
+    duration: "30m",
+    type: "video",
+  },
+  {
+    number: 2,
+    title: "Our Lady of Sorrows",
+    subtitle: "DARKCOM gathers mercenaries and hunts for a family heirloom.",
+    duration: "29m",
+    type: "video",
+  },
+  {
+    number: 3,
+    title: "Foundations of Faith",
+    subtitle: "Reference file for chapter notes and study prep.",
+    duration: "",
+    type: "file",
+  },
+  {
+    number: 4,
+    title: "Grace & Truth Notes",
+    subtitle: "Downloadable study guide and reflection notes.",
+    duration: "",
+    type: "file",
+  },
+  {
+    number: 5,
+    title: "Morning Prayer Guide",
+    subtitle: "PDF resource for daily devotion and reflection.",
+    duration: "",
+    type: "file",
+  },
+]
+
+function HistoryPanel() {
+  const navigate = useNavigate()
+  const [activeHistoryTab, setActiveHistoryTab] = useState<HistoryTab>("main")
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
+
+  const filtered = HISTORY_ITEMS.filter((item) =>
+    activeHistoryTab === "main" ? true : item.type === activeHistoryTab
+  )
+
+  const sorted = [...filtered].sort((a, b) =>
+    sortOrder === "asc" ? a.number - b.number : b.number - a.number
+  )
+
+  return (
+    <section className="mt-6">
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-end">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+            className="h-9 gap-2 rounded-full px-4"
+          >
+            <ArrowUpDown className="size-4" aria-hidden />
+            {sortOrder === "asc" ? "Ascending" : "Descending"}
+          </Button>
+        </div>
+
+        <div className="flex border-b border-border">
+          {HISTORY_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveHistoryTab(tab.id)}
+              className={cn(
+                "flex-1 pb-3 text-center text-sm font-medium transition-colors",
+                activeHistoryTab === tab.id
+                  ? "border-b-2 border-foreground text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 space-y-3">
+        {sorted.map((item) => (
+          <button
+            key={item.number}
+            type="button"
+            onClick={() => navigate("/course/detail")}
+            className="w-full rounded-3xl border border-border bg-muted p-4 text-left transition hover:border-accent"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-primary/10 text-base font-bold text-primary">
+                {item.number}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-base leading-tight font-semibold">
+                  {item.title}
+                </p>
+                <p className="text-sm text-muted-foreground">{item.subtitle}</p>
+              </div>
+              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
+                {item.type === "file" ? "File" : item.duration}
+              </span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
 }
 
 function ContentCard({
   item,
   onPress,
-  index,
 }: {
   item: ContentItem
   onPress: () => void
-  index: number
 }) {
   return (
     <button
@@ -327,7 +460,9 @@ function EventCard({ event }: { event: EventItem }) {
               <span>Upcoming</span>
             </div>
             <div className="space-y-1">
-              <h3 className="text-base font-semibold leading-tight">{event.title}</h3>
+              <h3 className="text-base leading-tight font-semibold">
+                {event.title}
+              </h3>
               <p className="text-sm text-muted-foreground">{event.location}</p>
             </div>
           </div>
@@ -369,7 +504,6 @@ function ContentSection({ section, tab }: { section: Section; tab: Tab }) {
           <div key={i} className="w-40 shrink-0 snap-start">
             <ContentCard
               item={item}
-              index={i}
               onPress={() => navigate("/course/detail")}
             />
           </div>
@@ -383,6 +517,7 @@ const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "library", label: "Library", icon: BookOpen },
   { id: "bookshelf", label: "Bookshelf", icon: BookMarked },
   { id: "downloads", label: "Downloads", icon: Download },
+  { id: "history", label: "History", icon: Clock },
 ]
 
 const BOTTOM_NAV = [
@@ -477,9 +612,13 @@ export default function LibraryPage() {
       </div>
 
       {/* Content sections */}
-      {SECTIONS[activeTab].map((section, i) => (
-        <ContentSection key={i} section={section} tab={activeTab} />
-      ))}
+      {activeTab === "history" ? (
+        <HistoryPanel />
+      ) : (
+        SECTIONS[activeTab].map((section, i) => (
+          <ContentSection key={i} section={section} tab={activeTab} />
+        ))
+      )}
 
       <BottomNav />
     </div>
