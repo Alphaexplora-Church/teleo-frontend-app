@@ -17,6 +17,7 @@ import {
   Image,
   Check,
 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -572,24 +573,23 @@ export default function CourseDetailPage() {
       {/* ── Title block ── */}
       <div className="mt-4">
         <h1 className="text-2xl leading-tight font-bold">{course.title}</h1>
-        {/* Tags */}
-        <div className="mt-1 flex flex-wrap gap-2">
-          {course.tags.map((tag, index) => (
-            <span key={tag} className="flex items-center gap-2">
-              <span className="text-xs text-foreground">{tag}</span>
-              {index < course.tags.length - 1 && (
-                <span className="text-xs text-foreground">•</span>
-              )}
-            </span>
-          ))}
-        </div>
-        <div className="mt-1.5 flex items-center gap-1.5 text-xs">
+        {/* Author */}
+        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-foreground">
           <User className="size-3.5 shrink-0" aria-hidden />
           <span>{course.author}</span>
         </div>
-        <div className="mt-1 flex items-center gap-1.5 text-xs">
+        {/* Date */}
+        <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
           <Calendar className="size-3.5 shrink-0" aria-hidden />
           <span>{course.date}</span>
+        </div>
+        {/* Tags */}
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {course.tags.map((tag) => (
+            <Badge key={tag} variant="outline" className="text-muted-foreground">
+              {tag}
+            </Badge>
+          ))}
         </div>
 
         {/* Offered in section */}
