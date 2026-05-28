@@ -1,6 +1,7 @@
 import { ArrowUpDown, Clock, ChevronRight, CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useLibraryViewModel } from "@/pages/library/viewmodel/use-library-view-model"
 import { useNavigate, useLocation } from "react-router"
@@ -66,29 +67,33 @@ function HistoryPanel({
         </div>
       </div>
 
-      <div className="mt-4 space-y-3">
-        {historyItems.map((item) => (
-          <button
-            key={item.number}
-            type="button"
-            onClick={() => navigate("/course/detail")}
-            className="w-full rounded-3xl border border-border bg-muted p-4 text-left transition hover:border-accent"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-primary/10 text-base font-bold text-primary">
-                {item.number}
+      <div className="mt-4">
+        {historyItems.map((item, index) => (
+          <div key={item.number}>
+            <button
+              type="button"
+              onClick={() => navigate("/course/detail")}
+              className="w-full py-4 text-left transition hover:bg-muted"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-primary/10 text-base font-bold text-primary">
+                  {item.number}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-base leading-tight font-semibold">
+                    {item.title}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.subtitle}
+                  </p>
+                </div>
+                <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
+                  {item.type === "file" ? "File" : item.duration}
+                </span>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-base leading-tight font-semibold">
-                  {item.title}
-                </p>
-                <p className="text-sm text-muted-foreground">{item.subtitle}</p>
-              </div>
-              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
-                {item.type === "file" ? "File" : item.duration}
-              </span>
-            </div>
-          </button>
+            </button>
+            {index < historyItems.length - 1 && <Separator className="my-3" />}
+          </div>
         ))}
       </div>
     </section>
