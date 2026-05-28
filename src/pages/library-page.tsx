@@ -243,22 +243,23 @@ export default function LibraryPage() {
         Ready to Explore?
       </h1>
 
-      {/* Upcoming events */}
-      <section className="mb-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold">Upcoming Events</h2>
-          <button type="button" className="text-sm font-medium text-accent">
-            View all
-          </button>
-        </div>
-        <div className="scrollbar-none mt-4 flex gap-4 overflow-x-auto pb-2">
-          {vm.upcomingEvents.map((event, i) => (
-            <div key={i} className="w-40 shrink-0 snap-start">
-              <EventCard event={event} />
-            </div>
-          ))}
-        </div>
-      </section>
+      {vm.activeTab !== "history" && (
+        <section className="mb-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Upcoming Events</h2>
+            <button type="button" className="text-sm font-medium text-accent">
+              View all
+            </button>
+          </div>
+          <div className="scrollbar-none mt-4 flex gap-4 overflow-x-auto pb-2">
+            {vm.upcomingEvents.map((event, i) => (
+              <div key={i} className="w-40 shrink-0 snap-start">
+                <EventCard event={event} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tab bar */}
       <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4">
