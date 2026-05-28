@@ -8,6 +8,7 @@ import {
   HeartHandshake,
   Megaphone,
   CircleUser,
+  CalendarDays,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -16,6 +17,33 @@ import { useState } from "react"
 import { useNavigate, useLocation } from "react-router"
 
 export type Tab = "library" | "bookshelf" | "downloads"
+export type EventItem = {
+  title: string
+  date: string
+  location: string
+  description: string
+}
+
+const UPCOMING_EVENTS: EventItem[] = [
+  {
+    title: "Sunday Book Club",
+    date: "Jun 1 · 4:00 PM",
+    location: "Community Hall",
+    description: "Join us for a guided reading and fellowship on transformative stories.",
+  },
+  {
+    title: "Live Workshop",
+    date: "Jun 8 · 6:30 PM",
+    location: "Online Webinar",
+    description: "An interactive session on unlocking your next chapter through faith-led habits.",
+  },
+  {
+    title: "Author Spotlight",
+    date: "Jun 15 · 7:00 PM",
+    location: "Main Library",
+    description: "Meet the authors behind the most inspirational books in your collection.",
+  },
+]
 
 export type ContentItem = {
   title: string
@@ -284,6 +312,35 @@ function ContentCard({
   )
 }
 
+function EventCard({ event }: { event: EventItem }) {
+  return (
+    <button
+      type="button"
+      className="w-full rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+    >
+      <Card className="relative aspect-2/3 w-full overflow-hidden rounded-lg bg-muted p-0">
+        <div className="absolute inset-0 h-full w-full bg-muted" />
+        <div className="relative flex h-full flex-col justify-between p-4">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+              <CalendarDays className="size-3" aria-hidden />
+              <span>Upcoming</span>
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-base font-semibold leading-tight">{event.title}</h3>
+              <p className="text-sm text-muted-foreground">{event.location}</p>
+            </div>
+          </div>
+          <div className="absolute right-2 bottom-2 flex items-center gap-1 rounded bg-black/50 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
+            <Clock className="size-3" aria-hidden />
+            <span>{event.date}</span>
+          </div>
+        </div>
+      </Card>
+    </button>
+  )
+}
+
 function ContentSection({ section, tab }: { section: Section; tab: Tab }) {
   const navigate = useNavigate()
 
@@ -382,6 +439,23 @@ export default function LibraryPage() {
       <h1 className="mb-5 text-2xl leading-tight font-bold">
         Ready to Explore?
       </h1>
+
+      {/* Upcoming events */}
+      <section className="mb-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">Upcoming Events</h2>
+          <button type="button" className="text-sm font-medium text-accent">
+            View all
+          </button>
+        </div>
+        <div className="scrollbar-none mt-4 flex gap-4 overflow-x-auto pb-2">
+          {UPCOMING_EVENTS.map((event, i) => (
+            <div key={i} className="w-40 shrink-0 snap-start">
+              <EventCard event={event} />
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Tab bar */}
       <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4">
