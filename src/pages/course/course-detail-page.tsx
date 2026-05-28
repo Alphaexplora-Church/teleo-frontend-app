@@ -453,6 +453,7 @@ export default function CourseDetailPage() {
     "all" | "file" | "video" | "downloaded"
   >("all")
   const [isChaptersExpanded, setIsChaptersExpanded] = useState(false)
+  const [showFullAbout, setShowFullAbout] = useState(false)
 
   // Local mutable chapter state so toggling completion works without a backend
   const [bookmarked, setBookmarked] = useState(false)
@@ -586,7 +587,11 @@ export default function CourseDetailPage() {
         {/* Tags */}
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {course.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-muted-foreground">
+            <Badge
+              key={tag}
+              variant="outline"
+              className="text-muted-foreground"
+            >
               {tag}
             </Badge>
           ))}
@@ -630,12 +635,19 @@ export default function CourseDetailPage() {
       />
 
       {/* ── Course description ── */}
-      <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
+      <div className="mt-6">
         <p className="text-sm leading-relaxed text-foreground">
-          In this course, we explore what the Bible says about true friendship,
-          how to build lasting relationships, and how to be a friend who
-          reflects Christ's love.
+          {showFullAbout ? course.about : `${course.about.slice(0, 30)}...`}
         </p>
+        {course.about.length > 30 && (
+          <button
+            type="button"
+            onClick={() => setShowFullAbout((prev) => !prev)}
+            className="mt-2 text-sm font-medium text-accent"
+          >
+            {showFullAbout ? "Read less" : "Read more..."}
+          </button>
+        )}
       </div>
 
       {/* ── Tabs ── */}
