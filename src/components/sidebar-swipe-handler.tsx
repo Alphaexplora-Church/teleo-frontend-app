@@ -1,5 +1,5 @@
 import { useSwipeSidebar } from "@/hooks/use-swipe-sidebar"
-import { useSidebar } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar-context"
 
 /**
  * Renderless component — must live inside <SidebarProvider>.

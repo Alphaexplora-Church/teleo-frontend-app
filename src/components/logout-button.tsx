@@ -8,7 +8,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar-context"
+import { ROUTES } from "@/lib/routes"
 import logo from "@/assets/logo.png"
 import { DoorOpen } from "lucide-react"
 
@@ -55,7 +56,7 @@ export function LogoutButton() {
               <span className="text-sm text-muted-foreground text-center">
                 We're hoping to see you again soon!
               </span>
-              <Button className="w-full" onClick={() => { setOpen(false); closeSidebar(); navigate("/login") }}>
+              <Button className="w-full" onClick={() => { setOpen(false); closeSidebar(); navigate(ROUTES.login) }}>
                 Confirm
               </Button>
             </div>

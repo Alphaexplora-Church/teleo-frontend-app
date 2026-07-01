@@ -1,25 +1,15 @@
-// src/layouts/MainLayout.jsx
 import { Outlet } from "react-router"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
 import { TooltipProvider } from "../ui/tooltip"
-import { SidebarSwipeHandler } from "@/components/sidebar-swipe-handler"
 
 const MainLayout = () => {
   return (
-    <SidebarProvider>
-      {/* Attaches swipe-to-open/close gesture for mobile */}
-      <SidebarSwipeHandler />
-      {/* Wrap everything that might use a Tooltip here */}
-      <TooltipProvider>
-        <AppSidebar />
-        <div className="flex min-h-svh w-full justify-center p-8 sm:p-10">
-          <main className="w-full max-w-sm">
-            <Outlet />
-          </main>
-        </div>
-      </TooltipProvider>
-    </SidebarProvider>
+    <TooltipProvider>
+      <div className="flex min-h-screen w-full justify-center bg-background px-4 py-6 sm:px-6 lg:px-8">
+        <main className="w-full max-w-3xl">
+          <Outlet />
+        </main>
+      </div>
+    </TooltipProvider>
   )
 }
 
